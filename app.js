@@ -1,62 +1,39 @@
-const express = require("express");
-const session = require("express-session");
-const path = require("path");
-const dotenv = require("dotenv");
-const cookieParser = require("cookie-parser");
-const methodOverride = require("method-override");
+// Importar correctamente 'connect-redis' y 'express-session'
+const express = require('express');
+const session = require('express-session');
+const redis = require('redis');
+const connectRedis = require('connect-redis');
 
+// Crear el cliente de Redis
+const redisClient = redis.createClient({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD,  // Si es necesario
+  tls: {}  // Si Redis requiere conexión segura
+});
+
+// Crear la instancia de RedisStore
+const RedisStore = connectRedis(session);  // Importante: connectRedis(session) no requiere paréntesis
+
+// Configuración de Express
 const app = express();
-dotenv.config();
 
-const expressLayout = require("express-ejs-layouts");
-
-// Middlewares
-
-// Middleware de sesión
+// Usar Redis para almacenar sesiones
 app.use(
   session({
-    secret: process.env.JWT_SECRET || "mi-secreto-super-seguro", // Usar variable de entorno o un valor por defecto
+    store: new RedisStore({ client: redisClient }), // Usar RedisStore aquí
+    secret: process.env.JWT_SECRET || "mi-secreto-super-seguro",
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // Solo en producción, asegúrate de usar HTTPS
-      httpOnly: true, // Asegura que solo el servidor pueda acceder a la cookie
+      secure: process.env.NODE_ENV === "production", // Solo en producción, usa cookies seguras
+      httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 semana
     },
   })
 );
 
-// Para procesar datos enviados desde forms
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// For cookies
-app.use(cookieParser());
-
-// Ejs layout
-app.use(expressLayout);
-
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-
-app.use(express.static(path.join(__dirname, "public")));
-
-// Usa method-override para manejar el _method (simulando PUT)
-app.use(methodOverride("_method"));
-
-// Rutas
-app.use(require("./src/routes/router"));
-
-// Clear cache
-app.use(function (req, res, next) {
-  if (!req.user)
-    res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
-  next();
-});
-
-// Server setup
-const port = process.env.PORT || 5000;
-
-app.listen(port, () => {
-  console.log(`Servidor en ejecución en https://localhost:${port}`);
+// Resto de tu configuración y rutas de Express
+app.listen(process.env.PORT || 5000, () => {
+  console.log('Servidor en ejecución');
 });
