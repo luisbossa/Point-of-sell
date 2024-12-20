@@ -1,0 +1,200 @@
+<header class="users-navbar">
+    <div class="logo-div">
+        <img width="22" height="21" alt="logo" src="/images/logo-index.webp" />
+        <h2 class="inventory-logo">OS</h2>
+    </div>
+    <div class="users-btns-div">
+        <a href="/" class="home-btns-div">
+            <svg class="svg-setup" fill="none" height="18" viewBox="0 0 24 24" width="18"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="m3 10.25v9.75c0 .5523.44771 1 1 1h4.42857c.55229 0 1-.4477 1-1v-6.7143h5.14283v6.7143c0 .5523.4477 1 1 1h4.4286c.5523 0 1-.4477 1-1v-9.75c0-.31476-.1482-.61115-.4-.8l-8.6-6.45-8.6 6.45c-.25181.18885-.4.48524-.4.8z"
+                    stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            </svg>
+            <span class="user-desktop-homelink">inicio</span>
+        </a>
+    </div>
+</header>
+<div class="inventory-pad-container">
+    <div class="inventory-left-container">
+        <div class="inventory-info-container">
+            <h2 class="inventory-info-heading1">Categorías</h2>
+        </div>
+
+        <div class="inventory-list-container">
+            <% categories.forEach(function(category, index) { %>
+                <div class="inventory-u-div">
+                    <span class="inventory-u-text">
+                        <%= index + 1 %>. <%= category %>
+                    </span>
+                </div>
+                <% }); %>
+        </div>
+
+
+    </div>
+    <div class="inventory-rigt-container">
+
+        <div class="category-container">
+            <!-- Formulario para agregar categoría -->
+            <form id="category-form" class="category-form" method="POST" action="/addCategoryProducts">
+                <div class="categories-wrap">
+                    <div class="product-container">
+                        <label for="addCategory" class="users-label">Categoría<span class="red-c">*</span></label>
+                        <input id="addCategory" name="addCategory" type="text" class="users-textinput"
+                            value="<%= addCategory || '' %>" autocomplete="addCategory" />
+                        <div class="msm-div">
+                            <% if (cmessage && !success) { %>
+                                <p class="errorMessage">
+                                    <%= cmessage %>
+                                </p>
+                                <% } %>
+                        </div>
+                    </div>
+                    <div class="product-container">
+                        <label for="backgroundColor" class="users-label">Color de categoría</label>
+                        <input id="backgroundColor" name="backgroundColor" type="color" class="colorinput"
+                            value="<%= backgroundColor || '#ffffff' %>" autocomplete="off" />
+                    </div>
+
+                    <% if (cmessage && success) { %>
+                        <p class="successMessage">
+                            <%= cmessage %>
+                        </p>
+                        <% } %>
+                </div>
+
+                <button type="submit" class="user-submit-btn">Nueva categoría
+                    <img width="20" height="20" alt="logo" src="/images/add.webp" />
+                </button>
+            </form>
+        </div>
+
+        <div class="inventory-title-container">
+            <h2 class="inventory-info-heading2">Productos</h2>
+        </div>
+
+        <form id="product-form" class="users-form" method="POST" action="/addProducts" enctype="multipart/form-data">
+            <div class="users-row-container">
+                <input id="productId" name="productId" type="hidden" class="users-textinput" value="" readonly />
+
+                <div class="users-div">
+                    <label for="productBarcode" class="users-label">Código de barras<span class="red-c">*</span></label>
+                    <input id="productBarcode" name="productBarcode" type="text" class="users-textinput" value="" />
+                </div>
+                <div class="users-div">
+                    <label for="productName" class="users-label">Nombre del producto<span class="red-c">*</span></label>
+                    <input id="productName" name="productName" type="text" class="users-textinput" value="" />
+                </div>
+                <div class="users-div">
+                    <label for="productPrice" class="users-label">Precio<span class="red-c">*</span></label>
+                    <input id="productPrice" name="productPrice" type="text" class="users-textinput" value=""
+                        autocomplete="productPrice" />
+                </div>
+
+                <div class="users-div">
+                    <label for="categoryId" class="users-label">Categoría<span class="red-c">*</span></label>
+                    <select id="categoryId" name="categoryId" class="users-textinput">
+                        <option value="" disabled selected>Seleccionar categoría</option>
+                        <% pCategories.forEach(category=> { %>
+                            <option value="<%= category.category_id %>">
+                                <%= category.category_name %>
+                            </option>
+                            <% }); %>
+                    </select>
+                </div>
+
+                <div class="users-div">
+                    <label for="product-img" class="users-label">Cargar imagen<span class="red-c">*</span></label>
+                    <div class="product-imgFile">
+                        <input class="input-imgFile" id="product-img" name="product-img" type="file" accept="image/*" />
+                    </div>
+                </div>
+
+                <button type="submit" class="user-submit-btn">Nuevo producto
+                    <img width="20" height="20" alt="logo" src="/images/add.webp" />
+                </button>
+            </div>
+
+            <div class="msm-div">
+                <% if (message && !success) { %>
+                    <p class="errorMessage">
+                        <%= message %>
+                    </p>
+                    <% } %>
+
+                        <% if (message && success) { %>
+                            <p class="successMessage">
+                                <%= message %>
+                            </p>
+                            <% } %>
+            </div>
+        </form>
+
+
+        <div class="itable-container">
+            <!-- Encabezado de la tabla -->
+            <div class="tbl-header">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código de barras</th>
+                            <th>Nombre del producto</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th class="actions-th">Acciones</th> <!-- Nueva columna de acciones -->
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <!-- Cuerpo de la tabla con contenido scrollable -->
+            <div class="tbl-content">
+                <table>
+                    <tbody>
+                        <!-- Recorrer los productos obtenidos de la base de datos y mostrarlos -->
+                        <% products.forEach(product=> { %>
+                            <tr>
+                                <td>
+                                    <%= product.barcode %>
+                                </td>
+                                <td>
+                                    <%= product.product_name %>
+                                </td>
+                                <td>
+                                    <%= product.category_name %>
+                                </td>
+                                <td>
+                                    ₡<%= product.price %>
+                                </td>
+                                <td class="actions-column">
+                                    <!-- Botones de edición y eliminación -->
+                                    <a href="#" class="edit-btn" data-id="<%= product.product_id %>"
+                                        data-barcode="<%= product.barcode %>"
+                                        data-product_name="<%= product.product_name %>"
+                                        data-category_id="<%= product.category_id %>"
+                                        data-price="<%= product.price %>">Editar</a>
+                                    <a href="javascript:void(0);" class="delete-btn"
+                                        data-id="<%= product.product_id %>">Eliminar</a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="inventory-footer-container">
+    <div class="users-cat-bar">
+
+        <h3 class="users-footer-brand">
+            ©&nbsp;<span class="users-text19">B</span>Studio
+        </h3>
+
+        <a href="/logout" type="button" class="exit-btn">SALIR</a>
+    </div>
+</div>
+</div>
+</div>
+<script src="/scripts/products.js"></script>

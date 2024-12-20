@@ -1,0 +1,141 @@
+<header class="users-navbar">
+    <div class="logo-div">
+        <img width="22" height="21" alt="logo" src="/images/logo-index.webp" />
+        <h2 class="users-logo">OS</h2>
+    </div>
+
+    <div class="users-btns-div">
+        <a href="/" class="home-btns-div">
+            <svg class="svg-setup" fill="none" height="15" viewBox="0 0 24 24" width="16"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="m3 10.25v9.75c0 .5523.44771 1 1 1h4.42857c.55229 0 1-.4477 1-1v-6.7143h5.14283v6.7143c0 .5523.4477 1 1 1h4.4286c.5523 0 1-.4477 1-1v-9.75c0-.31476-.1482-.61115-.4-.8l-8.6-6.45-8.6 6.45c-.25181.18885-.4.48524-.4.8z"
+                    stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            </svg>
+            <span class="user-desktop-homelink">inicio</span>
+        </a>
+    </div>
+</header>
+
+<div class="sales-pad-container">
+    <div class="sales-left-container">
+        <div class="sales-info-container">
+            <h2 class="sales-info-heading1">Ventas</h2>
+        </div>
+        <div class="sales-list-container">
+
+            <div id="datepicker"></div>
+
+            <div class="sales-u-div2">
+                <span class="sales-type-text">Datos de ventas</span>
+
+                <div class="sales-t-container">
+                    <span class="sales-num-text1" id="sales-num-text1">
+                        <span class="sales-text10">₡</span>
+                        <span><%= totalSales %></span> <!-- Mostrar el total de ventas aquí -->
+                    </span>
+                    <span class="sales-u-text1">
+                        <span class="sales-text12">Ventas totales</span>
+                        <br />
+                    </span>
+                </div>
+                <div class="sales-t-container">
+                    <span class="sales-num-text2" id="sales-num-text2">
+                        <span class="sales-text14">₡</span>
+                        <span><%= totalTax %></span> <!-- Mostrar el total de impuestos aquí -->
+                    </span>
+                    <span class="sales-u-text2">
+                        <span>Impuesto total</span>
+                        <br />
+                    </span>
+                </div>
+                
+                <div class="sales-t-container">
+                    <span class="sales-num-text3" id="sales-num-text3">
+                        <span class="sales-text18">₡</span>
+                        <span><%= itemTotal %></span> <!-- Mostrar el total de productos aquí -->
+                    </span>
+                    <span class="sales-u-text3">
+                        <span>Productos totales</span>
+                        <br />
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sales-rigt-container">
+        <div class="sales-title-container1">
+            <h2 class="sales-info-heading2">Transacciones</h2>
+        </div>
+        <div class="sales-title-container2">
+            <h2 class="sales-info-heading">
+                Del periodo 2024, octubre, 2&nbsp;
+            </h2>
+        </div>
+        <div class="itable-container">
+            <!-- Encabezado de la tabla -->
+            <div class="tbl-header">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transacción</th>
+                            <th>Vendedor</th>
+                            <th>Precio de venta</th>
+                            <th>Impuesto</th>
+                            <th>Cantidad vendida</th>
+                            <th>Fecha / Hora</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <!-- Cuerpo de la tabla con contenido scrollable -->
+            <div class="tbl-content">
+                <table>
+                    <tbody>
+                        <!-- Recorrer los productos obtenidos de la base de datos y mostrarlos -->
+                        <% if (salesData && salesData.length> 0) { %>
+                            <% salesData.forEach(function(sale) { %>
+                                <tr>
+                                    <td>
+                                        <%= sale.sale_transaction_id %>
+                                    </td>
+                                    <td>
+                                        <%= sale.user %>
+                                            <%= sale.name %>
+                                    </td>
+                                    <td>₡ <%= sale.final_price %>
+                                    </td>
+                                    <td>₡ <%= sale.tax %>
+                                    </td>
+                                    <td>
+                                        <%= sale.qty_item %>
+                                    </td>
+                                    <td>
+                                        <%= sale.datetime_sold %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="6">No se encontraron ventas para la fecha seleccionada.</td>
+                                        </tr>
+                                        <% } %>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sales-footer-container">
+    <div class="users-cat-bar">
+        <h3 class="users-footer-brand">
+            ©&nbsp;<span class="users-text19">B</span>Studio
+        </h3>
+
+        <a href="/logout" type="button" class="exit-btn">SALIR</a>
+    </div>
+</div>
+</div>
+</div>

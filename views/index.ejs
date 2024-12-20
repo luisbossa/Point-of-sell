@@ -1,0 +1,281 @@
+<header class="navbar">
+    <div class="logo-div">
+        <img width="22" height="21" alt="logo" src="/images/logo-index.webp" />
+        <h2 class="logo">OS</h2>
+    </div>
+
+    <div class="desktop-menu">
+        <div class="mobile-menu">
+            <div class="mobile-nav">
+                <div class="mobile-top">
+                    <img width="22" height="21" alt="logo" src="/images/logo-index.webp" />
+                    <h2 class="mobile-logo">OS</h2>
+                    <div class="mobile-close-div">
+                        <svg viewBox="0 0 1024 1024" class="mobile-close-icon">
+                            <path
+                                d="M810 274l-238 238 238 238-60 60-238-238-238 238-60-60 238-238-238-238 60-60 238 238 238-238z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <nav class="mobile-links">
+                    <a href="#" class="mobile-link">USUARIOS</a>
+                    <a href="#" class="mobile-link">VENTAS</a>
+                    <a href="#" class="mobile-link">SALIR</a>
+                </nav>
+            </div>
+        </div>
+        <div class="nav-btns-div">
+            <div class="index-burger-menu">
+                <svg viewBox="0 0 1024 1024" class="mobile-burger-icon">
+                    <path
+                        d="M128 554.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667zM128 298.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667zM128 810.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667z">
+                    </path>
+                </svg>
+            </div>
+
+            <!-- Botón visible solo para usuarios 'employee' -->
+            <% if (user && user.role==='empleado' ) { %>
+                <a class="index-desktop-link" href="/users">Usuarios</a>
+                <% } %>
+
+                    <!-- Botón visible solo para 'counter' -->
+                    <% if (user && user.role==='contador' ) { %>
+                        <a class="index-desktop-link" href="/sales">Ventas</a>
+                        <a class="index-desktop-link" href="/users">Usuarios</a>
+                        <% } %>
+
+                            <!-- Botones visibles solo para 'admin' -->
+                            <% if (user && user.role==='admin' ) { %>
+                                <a class="index-desktop-link" href="/products">Productos</a>
+                                <a class="index-desktop-link" href="/sales">Ventas</a>
+                                <a class="index-desktop-link" href="/users">Usuarios</a>
+                                <% } %>
+
+                                    <button class="desktop-page-btn" id="next-btn"
+                                        style="<%= hasMoreProducts ? '' : 'display: none;' %>">
+                                        Siguiente
+                                        <svg width="20" height="20" viewBox="0 0 24 24" class="next-icon">
+                                            <path
+                                                d="m15.632 12l-4.748-8.968l-1.768.936L13.368 12l-4.252 8.032l1.768.936z"
+                                                fill="currentColor"></path>
+                                        </svg>
+                                    </button>
+
+
+                                    <button class="desktop-page-btn" id="back-btn" style="display: none;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" class="next-icon">
+                                            <path
+                                                d="M8.368 12l4.748 8.968l1.768-.936L10.632 12l4.252-8.032l-1.768-.936z"
+                                                fill="currentColor">
+                                            </path>
+                                        </svg>
+                                        anterior
+                                    </button>
+
+                                    <div class="users-btns-div" style="<%= hasMoreProducts ? 'display: none;' : '' %>">
+                                        <a href="/" class="home-btns-div">
+                                            <svg class="svg-setup" fill="none" height="18" viewBox="0 0 24 24"
+                                                width="18" xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="m3 10.25v9.75c0 .5523.44771 1 1 1h4.42857c.55229 0 1-.4477 1-1v-6.7143h5.14283v6.7143c0 .5523.4477 1 1 1h4.4286c.5523 0 1-.4477 1-1v-9.75c0-.31476-.1482-.61115-.4-.8l-8.6-6.45-8.6 6.45c-.25181.18885-.4.48524-.4.8z"
+                                                    stroke="#fff" stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="2" />
+                                            </svg>
+                                            <span class="user-desktop-homelink">inicio</span>
+                                        </a>
+                                    </div>
+        </div>
+    </div>
+</header>
+
+<div class="pad-container-index">
+    <div class="display-container">
+        <div class="table-container">
+
+            <div class="table-header">
+                <table class="cart-table" id="cartTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th> <!-- Muestra el ID del producto -->
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="table-content">
+                <table>
+                    <tbody id="cartTableBody">
+                        <!-- Las filas del carrito se agregarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="amount-div">
+            <div class="price-container" id="priceContainer">
+                <p id="productCount">Cantidad de productos: 0</p> <!-- Muestra la cantidad de productos -->
+                <p id="ivaAmount">IVA (10%): ₡0.00</p> <!-- Muestra el IVA -->
+                <strong id="totalAmountText">Total: ₡0.00</strong> <!-- Muestra el total con IVA -->
+            </div>
+            <button type="button" class="buy-btn">efectivo
+                <img width="22" height="21" alt="logo" src="/images/cash.webp" />
+            </button>
+            <button type="button" class="buy-btn">tarjeta
+                <img width="22" height="21" alt="logo" src="/images/card.webp" />
+            </button>
+
+            <select id="product-select">
+                <% productos.forEach(product=> { %>
+                    <option value="<%= product.product_id %>">
+                        <%= product.product_id %>
+                    </option>
+                    <% }); %>
+            </select>
+
+        </div>
+    </div>
+
+    <!-- Productos iniciales (primeros 18 productos) -->
+    <div class="grid-container" id="gridContainer">
+        <% productos.forEach(product=> { %>
+            <div class="btn-container btn black" data-id="<%= product.product_id %>" value="<%= product.product_id %>">
+
+                <h2 class="btn-heading">
+                    <%= product.product_name %>
+                </h2>
+                <% if (product.product_image) { %>
+                    <img src="<%= product.product_image %>" alt="<%= product.product_name %>" class="btn-img">
+                    <% } else if (product.product_svg) { %>
+                        <div class="btn-img">
+                            <%= product.product_svg %>
+                        </div>
+                        <% } %>
+
+                            <div class="price-div">
+                                <span class="price" style="background-color: <%= product.backgroundColor %>;">₡<%=
+                                        product.price %></span>
+                            </div>
+            </div>
+            <% }); %>
+    </div>
+
+
+    <!-- Productos adicionales (19-36 productos) -->
+    <div class="grid-container" id="gridContainer2">
+        <% moreProductos.forEach(product=> { %>
+            <div class="btn-container btn black" data-id="<%= product.product_id %>">
+                <h2 class="btn-heading">
+                    <%= product.product_name %>
+                </h2>
+
+                <% if (product.product_image) { %>
+                    <img src="<%= product.product_image %>" alt="<%= product.product_name %>" class="btn-img">
+                    <% } else if (product.product_svg) { %>
+                        <div class="btn-img">
+                            <%= product.product_svg %>
+                        </div>
+                        <% } %>
+
+                            <div class="price-div">
+                                <!-- Aquí aplicamos el color de fondo al precio -->
+                                <span class="price" style="background-color: <%= product.backgroundColor %>;">₡<%=
+                                        product.price %></span>
+                            </div>
+            </div>
+            <% }); %>
+    </div>
+
+    <!-- Productos adicionales extra (después de los primeros 36) -->
+    <div class="grid-container" id="gridContainer3">
+        <% extraProductos.forEach(product=> { %>
+            <div class="btn-container btn black" data-id="<%= product.product_id %>">
+                <h2 class="btn-heading">
+                    <%= product.product_name %>
+                </h2>
+
+                <% if (product.product_image) { %>
+                    <img src="<%= product.product_image %>" alt="<%= product.product_name %>" class="btn-img">
+                    <% } %>
+
+                        <div class="price-div">
+                            <!-- Aquí aplicamos el color de fondo al precio -->
+                            <span class="price" style="background-color: <%= product.backgroundColor %>;">₡<%=
+                                    product.price %></span>
+                        </div>
+            </div>
+            <% }); %>
+    </div>
+
+    <!-- Productos adicionales extra (55-72 productos) -->
+    <div class="grid-container" id="gridContainer4">
+        <% moreExtraProductos.forEach(product=> { %>
+            <div class="btn-container btn black" data-id="<%= product.product_id %>">
+                <h2 class="btn-heading">
+                    <%= product.product_name %>
+                </h2>
+                <% if (product.product_image) { %>
+                    <img src="<%= product.product_image %>" alt="<%= product.product_name %>" class="btn-img">
+                    <% } %>
+                        <div class="price-div">
+                            <span class="price" style="background-color: <%= product.backgroundColor %>;">₡<%=
+                                    product.price %></span>
+                        </div>
+            </div>
+            <% }); %>
+    </div>
+
+
+</div>
+
+
+<!-- FOOTER -->
+<footer class="footer-container">
+    <div class="cat-bar">
+
+        <h2 class="footer-brand">
+            <span>©&nbsp;</span>
+            <span class="letter-b">B</span>Studio
+        </h2>
+
+        <div class="cat-div">
+            <a href="/categories/todos" class="cat-btn">Todos</a>
+            <a href="/categories/desayuno" class="cat-btn">Desayuno</a>
+            <a href="/categories/reposteria" class="cat-btn">Repostería</a>
+            <a href="/categories/platos fuertes" class="cat-btn">Platos Fuertes</a>
+            <a href="/categories/entradas" class="cat-btn">Entradas</a>
+            <a href="/categories/bebidas" class="cat-btn">Bebidas</a>
+        </div>
+
+        <!-- RESPONSIVE ICONS DIV -->
+        <div class="res-cat-container">
+            <div class="res-div">
+                <img alt="image" src="/images/coffe.webp" class="res-icon" />
+            </div>
+
+
+            <div class="res-div">
+                <img alt="image" src="/images/juice.webp" class="res-icon" />
+            </div>
+
+            <div class="res-div">
+                <svg width="24" height="24" viewBox="0 0 24 24" class="res-icon">
+                    <path
+                        d="M14.383 14.385q-.666-1.356-2.185-1.794t-3.14-.437q-1.612 0-3.155.437q-1.544.438-2.17 1.794zm-11.94 1q0-2.187 2.063-3.209t4.552-1.022t4.552 1.022t2.063 3.209zm0 3.307v-1h13.23v1zM17.672 22v-1h1.4l1.4-13.615h-9.011l-.135-1h4.615v-4h1v4h4.616l-1.496 14.704q-.056.413-.358.662t-.715.249zm0-1h1.4zM3.058 22q-.262 0-.439-.177t-.177-.438V21h13.231v.385q0 .261-.177.438t-.438.177zm6-7.616"
+                        fill="currentColor"></path>
+                </svg>
+            </div>
+
+        </div>
+        <a href="/logout" type="button" class="exit-btn">SALIR</a>
+    </div>
+</footer>
+</div>
+
+<script src="/scripts/main.js"></script>
+<script src="/scripts/touchpad.js"></script>
+<script src="/scripts/checkout.js"></script>

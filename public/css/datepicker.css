@@ -1,0 +1,206 @@
+:root {
+    --size-xs: 16px;
+    --size-sm: 48px;
+    --size-m: 96px;
+    --size-l: 144px;
+    --size-xl: 192px;
+    --size-xxl: 288px;
+    --size-maxwidth: 1400px;
+    --space-halfunit: 8px;
+    --space-unit: 16px;
+    --space-20: 20px;
+    --space-oneandhalfunits: 24px;
+    --space-twounits: 32px;
+    --space-threeunits: 48px;
+    --space-fourunits: 64px;
+    --space-fiveunits: 80px;
+    --space-sixunits: 96px;
+    --radius-2: 2px;
+    --radius-4: 4px;
+    --radius-8: 8px;
+    --inputradius: 24px;
+    --btnradius: 24px;
+    --radius-round: 50%;
+    --clr-bg: #9BBEC2;
+    --clr-mate: #424242;
+    --clr-white: #fff;
+    --clr-red: #a73737;
+    --clr-blue: #104C70;
+    --clr-orange: #df671e;
+    --clr-yellow: #E6AC00;
+    --clr-light-gray: #F8F8F8;
+    --clr-neutral-dark: #2d2d2d;
+    --clr-neutral-light: #FBFAF9;
+    --clr-shine-black: linear-gradient(rgb(67, 67, 67), rgb(28, 28, 28));
+    --letter-s: 0.07rem;
+    --line-h: 1.15;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* DatePicker Container */
+.ui-datepicker {
+	width: 270px;
+	height: auto;
+	margin: 5px auto 0;
+	font-family: Inter;
+}
+
+.ui-datepicker a {
+	text-decoration: none;
+}
+
+/* DatePicker Table */
+.ui-datepicker table {
+	width: 100%;
+}
+
+.ui-datepicker-header {
+	color: var(--clr-white);
+	font-weight: bold;
+	line-height: 30px;
+	padding: 5px 0;
+	background-color: #4091bf;
+	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+	background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+	background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+	background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+	box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.35), inset 0px 2px 1px 0px rgba(255, 255, 255, 0.35);
+}
+
+.ui-datepicker-title {
+	font-size: 0.9rem;
+	text-align: center;
+}
+
+.ui-datepicker-prev,
+.ui-datepicker-next {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	cursor: pointer;
+	background-image: url('/images/arrow.png');
+	background-repeat: no-repeat;
+	line-height: 600%;
+	overflow: hidden;
+}
+
+.ui-datepicker-prev {
+	float: left;
+	background-position: center -30px;
+}
+
+.ui-datepicker-next {
+	float: right;
+	background-position: center 0px;
+}
+
+.ui-datepicker thead {
+	background-color: #f7f7f7;
+	background-image: -moz-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #f1f1f1));
+	background-image: -webkit-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%);
+	background-image: -o-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%);
+	background-image: -ms-linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%);
+	background-image: linear-gradient(top, #f7f7f7 0%, #f1f1f1 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f7f7', endColorstr='#f1f1f1', GradientType=0);
+	border-bottom: 1px solid #bbb;
+}
+
+.ui-datepicker th {
+	text-transform: uppercase;
+	font-size: 6pt;
+	padding: 5px 0;
+	color: #666666;
+	text-shadow: 1px 0px 0px #fff;
+	filter: dropshadow(color=#fff, offx=1, offy=0);
+}
+
+.ui-datepicker tbody td {
+	padding: 0;
+	background-color: #F3F3F3;
+	border-right: 1px solid #bbb;
+}
+
+.ui-datepicker tbody td:last-child {
+	border-right: 0px;
+}
+
+.ui-datepicker tbody tr {
+	border-bottom: 1px solid #bbb;
+}
+
+.ui-datepicker tbody tr:last-child {
+	border-bottom: 0px;
+}
+
+.ui-datepicker td span,
+.ui-datepicker td a {
+	display: inline-block;
+	font-weight: bold;
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	color: #666666;
+	text-shadow: 1px 1px 0px #fff;
+	filter: dropshadow(color=#fff, offx=1, offy=1);
+}
+
+.ui-datepicker-calendar .ui-state-default {
+	width: 100%;
+	background: #ededed;
+	background: -moz-linear-gradient(top, #ededed 0%, #dedede 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ededed), color-stop(100%, #dedede));
+	background: -webkit-linear-gradient(top, #ededed 0%, #dedede 100%);
+	background: -o-linear-gradient(top, #ededed 0%, #dedede 100%);
+	background: -ms-linear-gradient(top, #ededed 0%, #dedede 100%);
+	background: linear-gradient(top, #ededed 0%, #dedede 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dedede', GradientType=0);
+	-webkit-box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+	-moz-box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+	box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+}
+
+.ui-datepicker-calendar .ui-state-hover {
+	background: #f7f7f7;
+}
+
+.ui-datepicker-calendar .ui-state-active {
+	color: var(--clr-white);
+	outline: 0;
+    border: 0;
+	background-color: #4091bf;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.35), inset 0px 2px 1px 0px rgba(255, 255, 255, 0.35);
+    transition: background-color 0.2s ease-in-out;
+    -moz-transition: background-color 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out;
+    -ms-transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.ui-datepicker-unselectable .ui-state-default {
+	background: #f4f4f4;
+	color: #b4b3b3;
+}
+
+.ui-datepicker-calendar td:first-child .ui-state-active {
+	margin-left: 0;
+}
+
+.ui-datepicker-calendar td:last-child .ui-state-active {
+	margin-right: 0;
+}
+
+.ui-datepicker-calendar tr:last-child .ui-state-active {
+	margin-bottom: 0;
+}

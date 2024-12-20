@@ -1,0 +1,199 @@
+<header class="users-navbar">
+    <div class="logo-div">
+        <img width="22" height="21" alt="logo" src="/images/logo-index.webp" />
+        <h2 class="users-logo">OS</h2>
+    </div>
+
+    <div class="users-btns-div">
+        <a href="/" class="home-btns-div">
+            <svg class="svg-setup" fill="none" height="15" viewBox="0 0 24 24" width="16"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="m3 10.25v9.75c0 .5523.44771 1 1 1h4.42857c.55229 0 1-.4477 1-1v-6.7143h5.14283v6.7143c0 .5523.4477 1 1 1h4.4286c.5523 0 1-.4477 1-1v-9.75c0-.31476-.1482-.61115-.4-.8l-8.6-6.45-8.6 6.45c-.25181.18885-.4.48524-.4.8z"
+                    stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            </svg>
+            <span class="user-desktop-homelink">inicio</span>
+        </a>
+    </div>
+</header>
+
+<div class="users-pad-container">
+    <div class="users-left-container">
+        <div class="users-info-container">
+            <h2 class="users-info-heading">Usuarios</h2>
+        </div>
+        <div class="users-photo-container">
+
+            <% if (user && user.image_file) { %>
+                <img alt="No image" src="<%= user.image_file %>" class="users-image" />
+                <% } else { %>
+                    <img alt="No image" src="/images/user-default.webp" class="users-image" />
+                    <% } %>
+
+                        <div class="users-photo-content-div">
+                            <span class="users-subheading">Usuario activo/a</span>
+                            <span class="users-subheading">
+                                <span>
+                                    <%= user.name %>
+                                </span>
+                                <br />
+                            </span>
+                        </div>
+        </div>
+        <div class="users-list-container">
+            <div class="users-u-div">
+                <span class="users-u-text">
+                    <span>
+                        <%= user.name %>
+                    </span>
+                    <br />
+                </span>
+                <span class="users-type-text">
+                    (<%= user.job_name %>)
+                </span>
+            </div>
+
+            <!-- Mostrar los demás usuarios registrados -->
+            <% if (otherUsers && otherUsers.length> 0) { %>
+                <% otherUsers.forEach(function(user) { %>
+                    <!-- Generamos un div único para cada usuario, usando su ID para la clase -->
+                    <div class="users-u-div">
+                        <span class="users-u-text">
+                            <span>
+                                <%= user.name %>
+                            </span>
+                            <br />
+                        </span>
+                        <span class="users-type-text">
+                            (<%= user.role %>) <!-- Aquí estamos usando el 'role' -->
+                        </span>
+                    </div>
+                    <% }); %>
+                        <% } else { %>
+                            <p>No hay usuarios</p>
+                            <% } %>
+        </div>
+
+    </div>
+
+
+    <div class="users-rigt-container">
+
+        <div class="users-title-container">
+            <h2 class="users-info-heading black-c">Administración de usuarios</h2>
+        </div>
+
+        <form id="form1" class="users-form" method="POST" action="/users" enctype="multipart/form-data">
+            <input name="_method" type="hidden" value="PUT">
+
+            <div class="users-row-container">
+                <input id="id" name="id" type="hidden" class="users-textinput" value="<%= user.id %>" readonly />
+
+                <div class="users-div">
+                    <label for="username" class="users-label">Nombre de usuario</label>
+                    <input id="username" name="username" type="text" class="users-textinput" value="<%= user.user %>"
+                        autocomplete="username" />
+                </div>
+                <div class="users-div">
+                    <label for="name" class="users-label">Nombre completo</label>
+                    <input id="name" name="name" type="text" class="users-textinput" value="<%= user.name %>"
+                        autocomplete="name" />
+                </div>
+            </div>
+            <div class="users-row-container">
+                <div class="users-div">
+                    <label for="email" class="users-label">Email</label>
+                    <input id="email" name="email" type="text" class="users-textinput" value="<%= user.email %>"
+                        autocomplete="email" />
+                </div>
+                <div class="users-div">
+                    <label for="address" class="users-label">Dirección</label>
+                    <input id="address" name="address" type="text" class="users-textinput" value="<%= user.address %>"
+                        autocomplete="address" />
+                </div>
+            </div>
+            <div class="users-row-container">
+                <div class="users-div">
+                    <label for="province" class="users-label">Provincia</label>
+                    <input id="province" name="province" type="text" class="users-textinput"
+                        value="<%= user.province %>" />
+                </div>
+                <div class="users-div">
+                    <label for="canton" class="users-label">Cánton</label>
+                    <input id="canton" name="canton" type="text" class="users-textinput" value="<%= user.canton %>" />
+                </div>
+                <div class="users-div">
+                    <label for="district" class="users-label">Distrito</label>
+                    <input id="district" name="district" type="text" class="users-textinput"
+                        value="<%= user.district %>" />
+                </div>
+            </div>
+            <div class="users-row-container">
+                <input type="hidden" id="job_name" name="job_name" class="textinput" value="<%= user.job_title_id %>"
+                    readonly />
+
+                <div class="users-div">
+                    <label for="image" class="users-label" for="imageFile">Cargar logo</label>
+                    <div class="custom-input-file">
+                        <input class="input-file" id="image" name="image" type="file" accept="image/*" multiple />
+                    </div>
+                </div>
+                <button type="submit" class="user-submit-btn">Guardar cambios</button>
+        </form>
+    </div>
+
+    <div class="users-subtitle-container">
+        <h2 class="users-info-heading black-c">Cambio de contraseña</h2>
+    </div>
+
+    <form id="form2" class="users-form" method="POST" action="/changePass">
+        <input name="_method" type="hidden" value="PUT">
+        <div class="users-row-container">
+            <input id="id2" name="id2" type="hidden" class="users-textinput" value="<%= user.id %>" readonly />
+
+            <div class="users-div">
+                <label for="currentPass" class="users-label">Contraseña actual<span class="red-c">*</span></label>
+                <input id="currentPass" name="currentPass" type="text" class="users-textinput" value="" />
+
+            </div>
+            <div class="users-div">
+                <label for="newPass" class="users-label">Contraseña nueva<span class="red-c">*</span></label>
+                <input id="newPass" name="newPass" type="text" class="users-textinput" value="" />
+            </div>
+            <div class="users-div">
+                <label for="repeatPass" class="users-label">Repetir contraseña<span class="red-c">*</span></label>
+                <input id="repeatPass" name="repeatPass" type="text" class="users-textinput" value="" />
+            </div>
+        </div>
+        <div class="msm-div">
+            <% if (errorMessage) { %>
+                <div class="errorMessage">
+                    <%= errorMessage %>
+                </div>
+                <% } %>
+        </div>
+        <div class="users-changepass-div">
+            <button type="submit" class="user-submit-btn">Cambiar Contraseña</button>
+        </div>
+
+        <div class="msm-div">
+            <% if (successMessage) { %>
+                <div class="successMessage">
+                    <%= successMessage %>
+                </div>
+                <% } %>
+        </div>
+    </form>
+</div>
+</div>
+<div class="users-footer-container">
+    <div class="users-cat-bar">
+        <h3 class="users-footer-brand">
+            ©&nbsp;<span class="users-text19">B</span>Studio
+        </h3>
+
+        <a href="/logout" type="button" class="exit-btn">SALIR</a>
+    </div>
+</div>
+</div>
+</div>
