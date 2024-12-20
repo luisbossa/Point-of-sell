@@ -1,11 +1,13 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
+
+const isProduction = process.env.NODE_ENV === "production"; // Detectar si es producción
 
 const connection = mysql.createConnection({
-  host: process.env.MYSQL_HOST, // Utiliza la variable de entorno correcta
-  user: process.env.MYSQL_USER, // Utiliza la variable de entorno correcta
-  password: process.env.MYSQL_PASSWORD, // Utiliza la variable de entorno correcta
-  database: process.env.MYSQL_DATABASE, // Utiliza la variable de entorno correcta
-  port: process.env.MYSQL_PORT, // Asegúrate de usar el puerto correcto
+  host: isProduction ? process.env.MYSQL_HOST : "autorack.proxy.rlwy.net", // Usar la URL interna o pública
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+  port: isProduction ? process.env.MYSQL_PORT : 51107, // Usar el puerto correcto según el entorno
 });
 
 connection.connect((error) => {
