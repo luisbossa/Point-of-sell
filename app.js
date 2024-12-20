@@ -53,4 +53,4 @@ app.use(function (req, res, next) {
 });
 
 app.listen(port);
-console.log("port runing in", port);
+console.log("port runing", port);
