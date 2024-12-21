@@ -55,7 +55,7 @@ app.use(function (req, res, next) {
 });
 
 // Server setup
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log(`Servidor en ejecución en https://localhost:${port}`);
