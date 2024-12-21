@@ -10,8 +10,6 @@ dotenv.config();
 
 const expressLayout = require("express-ejs-layouts");
 
-// Middlewares
-
 // Middleware de sesión
 app.use(
   session({
