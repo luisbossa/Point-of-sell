@@ -10,16 +10,14 @@ dotenv.config();
 
 const expressLayout = require("express-ejs-layouts");
 
-// Middlewares
-
 // Middleware de sesión
 app.use(
   session({
-    secret: process.env.JWT_SECRET, // Usa el secreto definido en .env
+    secret: process.env.JWT_SECRET || "mi-secreto-super-seguro", // Usar variable de entorno o un valor por defecto
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: true, // Asegúrate de que la cookie sea segura en producción
+      secure: process.env.NODE_ENV === "production", // Solo en producción, asegúrate de usar HTTPS
       httpOnly: true, // Asegura que solo el servidor pueda acceder a la cookie
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 semana
     },
