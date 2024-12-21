@@ -13,18 +13,16 @@ const expressLayout = require("express-ejs-layouts");
 // Middlewares
 
 // Middleware de sesión
-app.use(
-  session({
-    secret: process.env.JWT_SECRET || "mi-secreto-super-seguro", // Usar variable de entorno o un valor por defecto
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: process.env.NODE_ENV === "production", // Solo en producción, asegúrate de usar HTTPS
-      httpOnly: true, // Asegura que solo el servidor pueda acceder a la cookie
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 semana
-    },
-  })
-);
+app.use(session({
+  secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { 
+    secure: true, // Asegúrate de que la cookie sea segura en producción
+    httpOnly: true, // Asegura que solo el servidor pueda acceder a la cookie
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 semana
+  }
+}));
 
 // Para procesar datos enviados desde forms
 app.use(express.json());
@@ -55,7 +53,7 @@ app.use(function (req, res, next) {
 });
 
 // Server setup
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Servidor en ejecución en https://localhost:${port}`);
