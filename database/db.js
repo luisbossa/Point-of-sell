@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 
 const isProduction = process.env.NODE_ENV === "production"; // Detectar si es producción
 
@@ -15,7 +15,7 @@ connection.connect((error) => {
     console.log("El error de conexión es: " + error);
     return;
   }
-  console.log("Conectado a la base de datos MySQL!");
+  console.log("Conectado a la base de datos MySQL");
 });
 
 module.exports = connection;
