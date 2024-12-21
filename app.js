@@ -1,12 +1,12 @@
 const express = require("express");
 const session = require("express-session");
 const path = require("path");
-const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override");
 
-const app = express();
+const dotenv = require("dotenv");
 dotenv.config();
+const app = express();
 
 // Importa RedisStore y crea el cliente de Redis
 const RedisStore = require('connect-redis')(session);
