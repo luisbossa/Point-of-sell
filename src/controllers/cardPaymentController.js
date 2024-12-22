@@ -24,8 +24,9 @@ exports.cardPayment = async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: `${req.protocol}://${req.get("host")}/?payment_status=success`, // Redirigir al inicio con parámetro success
-      cancel_url: `${req.protocol}://${req.get("host")}/?payment_status=cancelled`, // Redirigir al inicio con parámetro cancelled
+      // Cambiar las URLs a la URL de producción
+      success_url: `https://point-of-sell.onrender.com/?payment_status=success`, // Redirigir al inicio con parámetro success
+      cancel_url: `https://point-of-sell.onrender.com/?payment_status=cancelled`, // Redirigir al inicio con parámetro cancelled
     });
 
     // Enviar la URL de la sesión de pago a la respuesta

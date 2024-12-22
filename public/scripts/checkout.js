@@ -267,30 +267,18 @@ window.onload = () => {
   const paymentStatus = urlParams.get("payment_status");
 
   if (paymentStatus === "success") {
-    // Mostrar el mensaje de éxito con SweetAlert
     Swal.fire({
-      title: "¡Pago realizado con éxito!",
-      text: "Gracias por tu compra. El pago fue procesado correctamente.",
+      title: "¡Pago exitoso!",
+      text: "Tu pago ha sido procesado correctamente.",
       icon: "success",
-      confirmButtonText: "Aceptar",
-      customClass: {
-        popup: "custom-popup",
-        title: "custom-title",
-        confirmButton: "custom-confirm-btn",
-      },
+      confirmButtonText: "OK",
     });
   } else if (paymentStatus === "cancelled") {
-    // Mostrar el mensaje de cancelación con SweetAlert
     Swal.fire({
       title: "Pago cancelado",
-      text: "El pago fue cancelado. Si tienes alguna duda, contáctanos.",
+      text: "Has cancelado el pago.",
       icon: "error",
-      confirmButtonText: "Aceptar",
-      customClass: {
-        popup: "custom-popup",
-        title: "custom-title",
-        confirmButton: "custom-confirm-btn",
-      },
+      confirmButtonText: "OK",
     });
   }
 };
