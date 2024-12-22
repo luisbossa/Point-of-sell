@@ -193,12 +193,13 @@
     width: 100%;
     height: auto;
     display: flex;
+    margin-top: var(--space-unit);
     padding: var(--space-oneandhalfunits) var(--space-oneandhalfunits) 0 var(--space-oneandhalfunits);
     align-items: center;
     border-radius: var(--dl-radius-radius-radius8);
     flex-direction: column;
     justify-content: flex-start;
-    background-color: fff;
+    background-color: var(--clr-white);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
@@ -289,10 +290,10 @@
     }
 
     .inventory-pad-container {
-        gap: var(--dl-space-space-halfunit);
         padding: 0px;
         flex-direction: column;
-        background-color: var(--clr-white);
+        background-color: transparent;
+        gap: var(--dl-space-space-halfunit);
     }
 
     .inventory-left-container {
@@ -330,7 +331,7 @@
     border-radius: var(--radius-4);
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-bottom:  1px solid var(--clr-mate);
+    border-bottom: 1px solid var(--clr-mate);
 }
 
 /* Estilo general de la tabla */

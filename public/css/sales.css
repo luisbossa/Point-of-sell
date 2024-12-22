@@ -217,6 +217,7 @@
     width: 100%;
     height: auto;
     display: flex;
+    color: var(--clr-neutral-dark);
     padding: var(--space-unit);
     align-items: center;
     border-radius: var(--dl-radius-radius-radius4);
@@ -415,7 +416,6 @@
 /* Contenedor general de la tabla */
 .saleTable-container {
     width: 100%;
-    margin: 20px auto;
     padding: 10px;
     background-color: #fff;
     border-radius: var(--radius-4);
@@ -454,6 +454,8 @@
 .saleTbl-content {
     overflow-x: auto;
     max-width: 100%;
+    height: 452px;
+    overflow: auto;
 }
 
 .saleTbl-content table {
@@ -477,6 +479,7 @@
 
 .saleTbl-content td:nth-child(1) {
     width: 20px;
+    font-weight: 600;
 }
 
 .saleTbl-header th:nth-child(2) {
