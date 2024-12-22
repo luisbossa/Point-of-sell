@@ -247,14 +247,14 @@
 
 .sales-rigt-container {
     width: 100%;
-    height: 639px;
     display: flex;
+    margin-top: var(--dl-space-space-unit);
     padding: var(--dl-space-space-oneandhalfunits);
     align-items: center;
     border-radius: var(--dl-radius-radius-radius8);
     flex-direction: column;
     justify-content: flex-start;
-    background-color: fff;
+    background-color: var(--clr-white);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
@@ -266,12 +266,6 @@
     align-items: center;
     padding: var(--space-unit) 0;
     justify-content: flex-start;
-}
-
-.sales-info-heading2 {
-    fill: #1C1C1C;
-    color: #1C1C1C;
-    font-size: 1.4rem;
 }
 
 .sales-title-container2 {
@@ -359,10 +353,6 @@
         font-size: 1rem;
     }
 
-    .sales-info-heading2 {
-        font-size: 1.2rem;
-    }
-
     .sales-info-heading {
         font-size: 1.1rem;
     }
@@ -394,12 +384,11 @@
         gap: var(--dl-space-space-halfunit);
         padding: 0px;
         flex-direction: column;
-        background-color: var(--clr-white);
+        background-color: transparent;
     }
 
     .sales-left-container {
         width: 100%;
-        height: 600px;
         border-top-right-radius: var(--dl-radius-radius-radius8);
         border-bottom-left-radius: var(--dl-radius-radius-radius8);
         border-bottom-right-radius: var(--dl-radius-radius-radius8);
@@ -418,11 +407,172 @@
 }
 
 @media(max-width: 479px) {
-    .sales-info-heading2 {
-        text-align: center;
-    }
-
     .sales-info-heading {
         text-align: center;
+    }
+}
+
+/* Contenedor general de la tabla */
+.saleTable-container {
+    width: 100%;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: var(--radius-4);
+    border: 1px solid var(--clr-mate);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezado de la tabla */
+.saleTbl-header {
+    width: 100%;
+    color: var(--clr-white);
+    font-size: 0.9rem;
+    letter-spacing: var(--letter-s);
+    text-transform: uppercase;
+    background-color: #3B3E45;
+    background-color: rgba(59, 62, 69, 0.9);
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.45), inset 0px 2px 1px 0px rgba(255, 255, 255, 0.15);
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.saleTbl-header table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.saleTbl-header th {
+    padding: 12px 0;
+    font-weight: bold;
+}
+
+/* Cuerpo de la tabla */
+.saleTbl-content {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.saleTbl-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.saleTbl-content td,
+.saleTbl-content th {
+    padding: 12px;
+    border: 1px solid var(--clr-mate);
+}
+
+.saleTbl-content tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.saleTbl-header th:nth-child(1) {
+    width: 24px;
+}
+
+.saleTbl-content td:nth-child(1) {
+    width: 20px;
+}
+
+.saleTbl-header th:nth-child(2) {
+    width: 150px;
+}
+
+.saleTbl-content td:nth-child(2) {
+    width: 250px;
+}
+
+.saleTbl-header th:nth-child(3) {
+    width: 150px;
+}
+
+.saleTbl-content td:nth-child(3) {
+    width: 250px;
+}
+
+.saleTbl-header th:nth-child(4) {
+    width: 150px;
+}
+
+.saleTbl-content td:nth-child(4) {
+    width: 250px;
+}
+
+.saleTbl-header th:nth-child(5) {
+    width: 105px;
+}
+
+.saleTbl-content td:nth-child(5) {
+    width: 174px;
+}
+
+.saleTbl-header th:nth-child(6) {
+    width: 108px;
+}
+
+.saleTbl-content td:nth-child(6) {
+    width: 180px;
+}
+
+/* Estilo de las celdas */
+.saleTbl-content td {
+    font-size: 14px;
+}
+
+/* Agregar interactividad con hover */
+.saleTbl-content tr:hover {
+    background-color: #f1f1f1;
+}
+
+.saleTbl-content td {
+    word-wrap: break-word;
+}
+
+/* Fila cuando no se encuentran datos */
+.saleTbl-content td[colspan="6"] {
+    text-align: center;
+    background-color: #f7f7f7;
+    font-style: italic;
+}
+
+/* Estilo de la tabla en dispositivos móviles */
+@media screen and (max-width: 768px) {
+    .saleTbl-header th {
+        font-size: 14px;
+    }
+
+    .saleTbl-content table {
+        width: 100%;
+        border: none;
+    }
+
+    .saleTbl-content td,
+    .saleTbl-content th {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .saleTbl-content td {
+        display: block;
+        width: 100%;
+        text-align: right;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .saleTbl-content td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .saleTbl-content td:nth-child(even) {
+        background-color: #fff;
     }
 }
