@@ -7,6 +7,7 @@ const productController = require("../controllers/productController");
 const salesController = require("../controllers/salesController");
 const salesDetailsController = require("../controllers/salesDetailsController");
 const connection = require("../../database/db");
+const moment = require("moment");
 
 router.get("/categories/:category", categoryController.category);
 
@@ -227,13 +228,73 @@ router.post("/updateProduct/:id", productController.updateProduct);
 router.delete("/deleteProducts/:id", productController.deleteProducts);
 
 router.get("/sales", authController.isAuthenticated, (req, res) => {
-  res.render("sales", {
-    user: req.user,
-    salesData: "",
-    selectedDate: "",
-    totalSales: "",
-    totalTax: "",
-    itemTotal: "",
+  // Obtener la fecha seleccionada, por defecto la fecha actual
+  const selectedDate = req.query.date || moment().format("YYYY-MM-DD"); // Usamos moment para obtener la fecha actual
+  const fullDate = selectedDate + " 00:00:00"; // Convertir la fecha a formato completo con hora
+
+  // Definir los rangos de tiempo para la consulta SQL
+  const startOfDay = fullDate; // El inicio del día (00:00:00)
+  const endOfDay = selectedDate + " 23:59:59"; // El final del día (23:59:59)
+
+  // Realizar la consulta SQL para obtener las ventas
+  const query = `
+    SELECT 
+      sale_transaction.sale_transaction_id,
+      sale_transaction.product_id,
+      sale_transaction.employee_number,
+      sale_transaction.qty_item,
+      sale_transaction.item_total,
+      sale_transaction.total_sum,
+      sale_transaction.tax,
+      sale_transaction.final_price,
+      sale_transaction.datetime_sold,
+      product.product_name,
+      product.price,
+      product.product_image,
+      users.user,
+      users.name,
+      users.email
+    FROM 
+      sale_transaction
+    JOIN 
+      product ON sale_transaction.product_id = product.product_id
+    JOIN 
+      users ON sale_transaction.employee_number = users.id
+    WHERE 
+      sale_transaction.datetime_sold >= ? AND sale_transaction.datetime_sold < ? 
+  `;
+
+  // Ejecutar la consulta SQL con los parámetros de fecha
+  connection.query(query, [startOfDay, endOfDay], (err, results) => {
+    if (err) {
+      console.error("Error en la consulta:", err);
+      return res
+        .status(500)
+        .json({ error: "Error al obtener los datos de las ventas" });
+    }
+
+    // Formatear las fechas para que sean más legibles
+    results = results.map((sale) => {
+      sale.datetime_sold = moment(sale.datetime_sold).format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
+      return sale;
+    });
+
+    // Calcular los totales
+    const totalSales = results.reduce((acc, sale) => acc + sale.total_sum, 0); // Sumar ventas totales
+    const totalTax = results.reduce((acc, sale) => acc + sale.tax, 0); // Sumar impuestos
+    const itemTotal = results.reduce((acc, sale) => acc + sale.qty_item, 0); // Sumar cantidad de items
+
+    // Renderizar la vista con los datos
+    res.render("sales", {
+      user: req.user,
+      salesData: results,
+      selectedDate: selectedDate,
+      totalSales: totalSales,
+      totalTax: totalTax,
+      itemTotal: itemTotal,
+    });
   });
 });
 
