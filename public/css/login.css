@@ -1,37 +1,18 @@
 :root {
-  --size-xs: 16px;
-  --size-sm: 48px;
   --size-m: 96px;
-  --size-l: 144px;
-  --size-xl: 192px;
-  --size-xxl: 288px;
-  --size-maxwidth: 1400px;
   --space-halfunit: 8px;
   --space-unit: 16px;
-  --space-20: 20px;
   --space-oneandhalfunits: 24px;
   --space-twounits: 32px;
   --space-threeunits: 48px;
-  --space-fourunits: 64px;
-  --space-fiveunits: 80px;
-  --space-sixunits: 96px;
-  --radius-2: 2px;
   --radius-4: 4px;
   --radius-8: 8px;
-  --inputradius: 24px;
-  --btnradius: 24px;
   --radius-round: 50%;
-  --clr-bg: #9BBEC2;
   --clr-mate: #424242;
   --clr-white: #fff;
   --clr-red: #a73737;
-  --clr-neutral-dark: #1C1C1C;
-  --clr-neutral-light: #FBFAF9;
-  --clr-shine-black: linear-gradient(rgb(67, 67, 67), rgb(28, 28, 28));
   --clr-shine-red: linear-gradient(to left, #a73737, #7a2828);
-  --clr-shine-green: linear-gradient(to right, #093028, #237a57);
   --letter-s: 0.07rem;
-  --line-h: 1.15;
 }
 
 body {
@@ -57,22 +38,21 @@ body {
   background-color: var(--clr-white);
 }
 
-.form-login {
+.form-login,
+.form-register {
   width: 289px;
-  height: 400px;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: end;
 }
 
+.form-login {
+  height: 360px;
+}
+
 .form-register {
-  width: 289px;
   height: 520px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: end;
 }
 
 .heading {
@@ -81,17 +61,7 @@ body {
   margin-bottom: var(--space-halfunit);
 }
 
-.main-div {
-  width: 100%;
-  height: auto;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  margin: var(--space-unit) 0 var(--space-twounits) 0;
-  gap: var(--space-unit);
-}
-
+.main-div,
 .register-main-div {
   width: 100%;
   height: auto;
@@ -109,16 +79,10 @@ body {
 }
 
 .red-c {
-  color: var(--clr-red)
+  color: var(--clr-red);
 }
 
-.btns-div {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-halfunit);
-}
-
+.btns-div,
 .btns-div-register {
   width: 100%;
   display: flex;
@@ -132,7 +96,7 @@ body {
   justify-content: center;
   text-align: center;
   font-size: 0.8rem;
-  letter-spacing: 0.5px;
+  letter-spacing: var(--letter-s);
   opacity: 0;
   padding: 10px 15px;
   border-radius: var(--radius-8);
@@ -143,15 +107,9 @@ body {
   white-space: nowrap;
   background-color: var(--clr-red);
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
-  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url(/images/bg02.webp);
-  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
   background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
   box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.35), inset 0px 2px 1px 0px rgba(255, 255, 255, 0.35);
   transition: background-color 0.2s ease-in-out;
-  -moz-transition: background-color 0.2s ease-in-out;
-  -webkit-transition: background-color 0.2s ease-in-out;
-  -ms-transition: background-color 0.2s ease-in-out;
   animation: alert-animation 5s forwards;
 }
 
@@ -190,7 +148,6 @@ body {
 .text {
   color: var(--clr-mate);
   font-size: 1.1rem;
-  font-style: normal;
   font-weight: 600;
 }
 
@@ -214,26 +171,20 @@ body {
   display: inline-block;
   background-color: #4091bf;
   border-radius: var(--radius-4);
-  color: var(--clr-neutral-light);
+  color: var(--clr-white);
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 600;
   font-size: 1.1rem;
-  letter-spacing: 0.075em;
+  letter-spacing: var(--letter-s);
   padding: 0.7rem;
   outline: 0;
   border: 0;
   white-space: nowrap;
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
-  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
-  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
   background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
   box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.35), inset 0px 2px 1px 0px rgba(255, 255, 255, 0.35);
   transition: background-color 0.2s ease-in-out;
-  -moz-transition: background-color 0.2s ease-in-out;
-  -webkit-transition: background-color 0.2s ease-in-out;
-  -ms-transition: background-color 0.2s ease-in-out;
   cursor: pointer;
 }
 
@@ -248,8 +199,6 @@ body {
 .btn.blue:active {
   background-color: #3081af;
 }
-
-/* Button black */
 
 .btn.black {
   background-color: #464a52;
@@ -268,17 +217,13 @@ body {
   height: 73px;
   position: absolute;
   top: -32px;
-  left: 132px;
+  left: 128px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-round);
-  background-color: #3B3E45;
   background-color: rgba(59, 62, 69);
-  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
-  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
   background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
   box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.45), inset 0px 2px 1px 0px rgba(255, 255, 255, 0.15);
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
@@ -291,7 +236,7 @@ body {
   border-radius: var(--radius-round);
 }
 
-@media(max-width: 1200px) {
+@media (max-width: 1200px) {
   .heading {
     font-size: 1.3rem;
   }
@@ -303,23 +248,12 @@ body {
   }
 }
 
-@media(max-width: 479px) {
+@media (max-width: 479px) {
   .main-container-login {
     width: 100%;
-    height: 100vh;
     flex-direction: column-reverse;
     justify-content: center;
-    border-radius: 0;
     padding: var(--space-oneandhalfunits);
     gap: var(--space-threeunits);
-  }
-
-  .form {
-    width: 100%;
-    height: auto;
-  }
-
-  .round-div {
-    position: initial;
   }
 }

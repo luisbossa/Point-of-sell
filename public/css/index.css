@@ -58,7 +58,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--space-halfunit) 0 var(--space-oneandhalfunits);
+    padding: 0 var(--space-halfunit) 0 12px;
     border-radius: var(--radius-8);
     background-color: #3B3E45;
     background-color: rgba(59, 62, 69, 0.9);
@@ -161,7 +161,6 @@ body {
 
 .index-burger-menu {
     display: none;
-    margin-right: var(--space-halfunit);
     cursor: pointer;
 }
 
@@ -532,7 +531,7 @@ td {
     align-items: center;
     justify-content: space-between;
     border-radius: var(--radius-8);
-    padding: 0 var(--space-halfunit) 0 var(--space-halfunit);
+    padding: 0 var(--space-halfunit) 0 12px;
     background-color: #3B3E45;
     background-color: rgba(59, 62, 69, 0.9);
     background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
@@ -617,8 +616,7 @@ td {
 
 @media(max-width: 1200px) {
 
-    .main-container,
-    .navbar {
+    .main-container {
         padding-left: var(--space-unit);
         padding-right: var(--space-unit);
     }
@@ -690,10 +688,6 @@ td {
         height: 15px;
     }
 
-    .price-container {
-        height: 140px;
-    }
-
     .grid-container {
         grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
         margin-top: var(--space-unit);
@@ -704,6 +698,8 @@ td {
         font-size: 0.8rem;
     }
 
+    .price-container,
+    .buy-btn,
     .footer-brand {
         font-size: 0.9rem;
     }
@@ -734,30 +730,19 @@ td {
     }
 }
 
-@media(max-width: 479px) {
+@media(max-width: 540px) {
+    .logo {
+        font-size: 1.2rem;
+    }
+
     .mobile-menu {
         padding: 16px;
     }
 
-    .price-container {
-        height: 100px;
-    }
-
+    .res-cat-container,
     .index-desktop-link,
-    .desktop-page-btn {
+    .next-p {
         display: none;
-    }
-
-    .desktop-menu {
-        display: none;
-    }
-
-    .navbar {
-        padding: var(--space-halfunit);
-    }
-
-    .logo {
-        font-size: 1.2rem;
     }
 
     .index-burger-menu {
