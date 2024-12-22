@@ -6,6 +6,7 @@ const categoryController = require("../controllers/categoryController");
 const productController = require("../controllers/productController");
 const salesController = require("../controllers/salesController");
 const salesDetailsController = require("../controllers/salesDetailsController");
+const cardPaymentController = require("../controllers/cardPaymentController");
 const connection = require("../../database/db");
 const moment = require("moment");
 
@@ -313,5 +314,7 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
 });
 
 router.get("/get-sales-data", salesDetailsController.salesDetails);
+
+router.post("/cardPayment", cardPaymentController.cardPayment);
 
 module.exports = router;

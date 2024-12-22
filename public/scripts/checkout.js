@@ -131,7 +131,6 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
 
       // Calcular item_total (la suma de todas las cantidades de productos en el carrito)
       const item_total = cart.reduce((sum, item) => sum + item.quantity, 0);
-      
 
       // Calcular el IVA (10%) sobre el total_sum
       const tax = total_sum * 0.1; // IVA del 10%
@@ -195,3 +194,103 @@ function updateChange(totalConIva) {
     changeElement.textContent = "0";
   }
 }
+
+// Función para realizar pago con STRIPE
+
+const checkout = document.getElementById("checkout-btn");
+
+checkout.addEventListener("click", async () => {
+  // Obtener el carrito
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  // Verificar si el carrito está vacío
+  if (cart.length === 0) {
+    // Mostrar un mensaje con SweetAlert si el carrito está vacío
+    Swal.fire({
+      title: "Carrito vacío",
+      text: "No tienes productos en tu carrito. Agrega algo antes de proceder.",
+      icon: "warning",
+      confirmButtonText: "Entendido",
+      customClass: {
+        popup: "custom-popup",
+        title: "custom-title",
+        confirmButton: "custom-confirm-btn",
+        // Estilos personalizados para el ícono
+        icon: "custom-icon",
+      },
+    });
+    return; // Detener la ejecución si el carrito está vacío
+  }
+
+  try {
+    // Obtener el total del carrito (sin IVA)
+    const totalSinIva = cart.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+
+    // Calcular el IVA (10%)
+    const iva = totalSinIva * 0.1;
+
+    // Total con IVA
+    const totalConIva = totalSinIva + iva;
+
+    // Convertir a centavos (Stripe espera la cantidad en centavos)
+    const totalAmount = Math.round(totalConIva * 100);
+
+    // Realizar la solicitud al backend
+    const res = await fetch("http://localhost:3000/cardPayment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        totalAmount: totalAmount, // Enviar el total con IVA en centavos
+      }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      // Redirigir al usuario a la página de pago de Stripe
+      window.location.href = data.url;
+    } else {
+      console.error("Error en la creación de sesión de pago");
+    }
+  } catch (error) {
+    console.error("Error al procesar el pago:", error);
+  }
+});
+
+window.onload = () => {
+  // Verificar si el parámetro 'payment_status' está en la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const paymentStatus = urlParams.get("payment_status");
+
+  if (paymentStatus === "success") {
+    // Mostrar el mensaje de éxito con SweetAlert
+    Swal.fire({
+      title: "¡Pago realizado con éxito!",
+      text: "Gracias por tu compra. El pago fue procesado correctamente.",
+      icon: "success",
+      confirmButtonText: "Aceptar",
+      customClass: {
+        popup: "custom-popup",
+        title: "custom-title",
+        confirmButton: "custom-confirm-btn",
+      },
+    });
+  } else if (paymentStatus === "cancelled") {
+    // Mostrar el mensaje de cancelación con SweetAlert
+    Swal.fire({
+      title: "Pago cancelado",
+      text: "El pago fue cancelado. Si tienes alguna duda, contáctanos.",
+      icon: "error",
+      confirmButtonText: "Aceptar",
+      customClass: {
+        popup: "custom-popup",
+        title: "custom-title",
+        confirmButton: "custom-confirm-btn",
+      },
+    });
+  }
+};
