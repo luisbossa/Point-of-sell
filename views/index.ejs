@@ -53,7 +53,7 @@
                                 <% } %>
 
                                     <button class="desktop-page-btn" id="next-btn"
-                                        style="<%= hasMoreProducts ? '' : 'display: none;' %>">
+                                        data-show="<%= hasMoreProducts ? 'true' : 'false' %>">
                                         Siguiente
                                         <svg width="20" height="20" viewBox="0 0 24 24" class="next-icon">
                                             <path
@@ -61,7 +61,6 @@
                                                 fill="currentColor"></path>
                                         </svg>
                                     </button>
-
 
                                     <button class="desktop-page-btn" id="back-btn" style="display: none;">
                                         <svg width="20" height="20" viewBox="0 0 24 24" class="next-icon">
@@ -73,7 +72,8 @@
                                         anterior
                                     </button>
 
-                                    <div class="users-btns-div" style="<%= hasMoreProducts ? 'display: none;' : '' %>">
+                                    <div class="users-btns-div" id="users-btns-div"
+                                        data-show="<%= hasMoreProducts ? 'true' : 'false' %>">
                                         <a href="/" class="home-btns-div">
                                             <svg class="svg-setup" fill="none" height="18" viewBox="0 0 24 24"
                                                 width="18" xmlns="http://www.w3.org/2000/svg">
@@ -85,6 +85,7 @@
                                             <span class="user-desktop-homelink">inicio</span>
                                         </a>
                                     </div>
+
         </div>
     </div>
 </header>
@@ -136,7 +137,6 @@
                     </option>
                     <% }); %>
             </select>
-
         </div>
     </div>
 
@@ -144,7 +144,6 @@
     <div class="grid-container" id="gridContainer">
         <% productos.forEach(product=> { %>
             <div class="btn-container btn black" data-id="<%= product.product_id %>" value="<%= product.product_id %>">
-
                 <h2 class="btn-heading">
                     <%= product.product_name %>
                 </h2>
@@ -155,10 +154,10 @@
                             <%= product.product_svg %>
                         </div>
                         <% } %>
-
                             <div class="price-div">
-                                <span class="price" style="background-color: <%= product.backgroundColor %>;">₡<%=
-                                        product.price %></span>
+                                <span class="price" data-background-color="<%= product.backgroundColor %>">
+                                    ₡<%= product.price %>
+                                </span>
                             </div>
             </div>
             <% }); %>
@@ -172,7 +171,6 @@
                 <h2 class="btn-heading">
                     <%= product.product_name %>
                 </h2>
-
                 <% if (product.product_image) { %>
                     <img src="<%= product.product_image %>" alt="<%= product.product_name %>" class="btn-img">
                     <% } else if (product.product_svg) { %>
@@ -180,11 +178,10 @@
                             <%= product.product_svg %>
                         </div>
                         <% } %>
-
                             <div class="price-div">
-                                <!-- Aquí aplicamos el color de fondo al precio -->
-                                <span class="price" style="background-color: <%= product.backgroundColor %>;">₡<%=
-                                        product.price %></span>
+                                <span class="price" data-background-color="<%= product.backgroundColor %>">
+                                    ₡<%= product.price %>
+                                </span>
                             </div>
             </div>
             <% }); %>
@@ -197,15 +194,13 @@
                 <h2 class="btn-heading">
                     <%= product.product_name %>
                 </h2>
-
                 <% if (product.product_image) { %>
                     <img src="<%= product.product_image %>" alt="<%= product.product_name %>" class="btn-img">
                     <% } %>
-
                         <div class="price-div">
-                            <!-- Aquí aplicamos el color de fondo al precio -->
-                            <span class="price" style="background-color: <%= product.backgroundColor %>;">₡<%=
-                                    product.price %></span>
+                            <span class="price" data-background-color="<%= product.backgroundColor %>">
+                                ₡<%= product.price %>
+                            </span>
                         </div>
             </div>
             <% }); %>
@@ -222,8 +217,9 @@
                     <img src="<%= product.product_image %>" alt="<%= product.product_name %>" class="btn-img">
                     <% } %>
                         <div class="price-div">
-                            <span class="price" style="background-color: <%= product.backgroundColor %>;">₡<%=
-                                    product.price %></span>
+                            <span class="price" data-background-color="<%= product.backgroundColor %>">
+                                ₡<%= product.price %>
+                            </span>
                         </div>
             </div>
             <% }); %>

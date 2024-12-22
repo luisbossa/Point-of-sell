@@ -84,3 +84,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  var button = document.getElementById("next-btn");
+  var showButton = button.getAttribute("data-show") === "true";
+
+  if (!showButton) {
+    button.style.display = "none";
+  }
+
+  var usersBtnsDiv = document.getElementById("users-btns-div");
+  var showDiv = usersBtnsDiv.getAttribute("data-show") === "true";
+
+  if (showDiv) {
+    usersBtnsDiv.style.display = "none";
+  } else {
+    usersBtnsDiv.style.display = "";
+  }
+
+  var priceElements = document.querySelectorAll(".price");
+
+  priceElements.forEach(function (priceElement) {
+    var backgroundColor = priceElement.getAttribute("data-background-color");
+
+    if (backgroundColor) {
+      priceElement.style.backgroundColor = backgroundColor;
+    }
+  });
+});
