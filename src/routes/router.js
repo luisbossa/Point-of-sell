@@ -273,7 +273,7 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
         .json({ error: "Error al obtener los datos de las ventas" });
     }
 
-    // Formatear las fechas para que sean más legibles
+    // Verificar y formatear las fechas para que sean más legibles
     results = results.map((sale) => {
       sale.datetime_sold = moment(sale.datetime_sold).format(
         "YYYY-MM-DD HH:mm:ss"
@@ -282,11 +282,25 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
     });
 
     // Calcular los totales
-    const totalSales = results.reduce((acc, sale) => acc + sale.total_sum, 0); // Sumar ventas totales
-    const totalTax = results.reduce((acc, sale) => acc + sale.tax, 0); // Sumar impuestos
-    const itemTotal = results.reduce((acc, sale) => acc + sale.qty_item, 0); // Sumar cantidad de items
+    // Total de ventas: Sumar el total de cada transacción
+    const totalSales = results.reduce(
+      (acc, sale) => acc + parseFloat(sale.total_sum),
+      0
+    );
 
-    // Renderizar la vista con los datos
+    // Total de impuestos: Sumar el impuesto de cada transacción
+    const totalTax = results.reduce(
+      (acc, sale) => acc + parseFloat(sale.tax),
+      0
+    );
+
+    // Total de productos: Sumar la cantidad de productos vendidos
+    const itemTotal = results.reduce(
+      (acc, sale) => acc + parseInt(sale.qty_item, 10),
+      0
+    );
+
+    // Renderizar la vista con los datos y los totales
     res.render("sales", {
       user: req.user,
       salesData: results,
