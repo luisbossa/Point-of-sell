@@ -1,8 +1,7 @@
-// Evento para el botón de compra
 document.querySelector(".buy-btn").addEventListener("click", () => {
   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-  // Si el carrito está vacío, mostrar los valores en 0, deshabilitar los botones y el input
+  // Si el carrito está vacío, mostramos un mensaje y deshabilitamos el pago
   if (cart.length === 0) {
     Swal.fire({
       title: "Verificar pago",
@@ -33,7 +32,7 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
         validationMessage: "custom-validation-message",
       },
       preConfirm: () => {
-        return false; // No se hace nada ya que no hay productos en el carrito
+        return false; // No se hace nada si no hay productos en el carrito
       },
       willClose: () => {
         document.getElementById("payment").value = "";
@@ -132,45 +131,41 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
       // Calcular item_total (la suma de todas las cantidades de productos en el carrito)
       const item_total = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-      // Calcular el IVA (10%) sobre el total_sum
-      const tax = total_sum * 0.1; // IVA del 10%
+      const finalPrice = total_sum + total_sum * 0.1; // Precio final con IVA
 
-      // Calcular final_price: El precio total con IVA de todos los productos en el carrito
-      const finalPrice = cart.reduce((sum, item) => {
-        // Calculamos el total con IVA por cada ítem
-        const itemTotalWithTax =
-          item.price * item.quantity + item.price * item.quantity * 0.1;
-        return sum + itemTotalWithTax;
-      }, 0);
-
-      // Realizar la transacción
+      // Enviar la transacción al backend
       fetch("/salesTransaction", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          total_sum: parseFloat(totalConIva.toFixed(2)), // Total con IVA
-          employee_number: 1, // Número de empleado
-          item_total: item_total,
-          //tax: parseFloat(tax.toFixed(2)), // IVA
-          finalPrice: parseFloat(finalPrice.toFixed(2)),
-          transactions: transactions, // Las transacciones con productos
+          total_sum,
+          employee_number: 1, // Ajusta según sea necesario
+          item_total,
+          finalPrice,
+          transactions,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
-          Swal.fire({
-            title: "Pago realizado con éxito",
-            icon: "success",
-          });
+          if (data.success) {
+            Swal.fire({
+              title: "Pago realizado con éxito",
+              icon: "success",
+            });
 
-          // Borrar el carrito después de un pago exitoso
-          localStorage.removeItem("cart");
-
-          // Actualizar la tabla y el resumen del carrito
-          updateCartTable(); // Limpiar la tabla visualmente
-          updateCartSummary(); // Actualizar el resumen visualmente
+            // Borrar el carrito después del pago
+            localStorage.removeItem("cart");
+            updateCartTable(); // Limpiar la tabla visualmente
+            updateCartSummary(); // Actualizar el resumen visualmente
+          } else {
+            Swal.fire({
+              title: "Hubo un error",
+              text: data.error || "Error desconocido",
+              icon: "error",
+            });
+          }
         })
         .catch((error) => {
           Swal.fire({
@@ -183,112 +178,10 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
   });
 });
 
-// Función para actualizar el cambio en tiempo real
-function updateChange(totalConIva) {
+function updateChange(total) {
   const payment = parseFloat(document.getElementById("payment").value);
-  const changeElement = document.getElementById("change");
   if (!isNaN(payment)) {
-    const change = payment - totalConIva;
-    changeElement.textContent = change >= 0 ? change.toFixed(2) : "0";
-  } else {
-    changeElement.textContent = "0";
+    const change = payment - total;
+    document.getElementById("change").textContent = change.toFixed(2);
   }
 }
-
-// Función para realizar pago con STRIPE
-
-const checkout = document.getElementById("checkout-btn");
-
-checkout.addEventListener("click", async () => {
-  // Obtener el carrito
-  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-  // Verificar si el carrito está vacío
-  if (cart.length === 0) {
-    // Mostrar un mensaje con SweetAlert si el carrito está vacío
-    Swal.fire({
-      title: "No hay productos",
-      text: "Agrega algún producto",
-      icon: "warning",
-      confirmButtonText: "Entendido",
-      customClass: {
-        popup: "custom-popup",
-        title: "custom-title",
-        confirmButton: "custom-confirm-btn",
-        // Estilos personalizados para el ícono
-        icon: "custom-icon",
-      },
-    });
-    return; // Detener la ejecución si el carrito está vacío
-  }
-
-  try {
-    // Obtener el total del carrito (sin IVA)
-    const totalSinIva = cart.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0
-    );
-
-    // Calcular el IVA (10%)
-    const iva = totalSinIva * 0.1;
-
-    // Total con IVA
-    const totalConIva = totalSinIva + iva;
-
-    // Convertir a centavos (Stripe espera la cantidad en centavos)
-    const totalAmount = Math.round(totalConIva * 100);
-
-    // Realizar la solicitud al backend
-    const res = await fetch("http://localhost:3000/cardPayment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        totalAmount: totalAmount, // Enviar el total con IVA en centavos
-      }),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      // Redirigir al usuario a la página de pago de Stripe
-      window.location.href = data.url;
-    } else {
-      console.error("Error en la creación de sesión de pago");
-    }
-  } catch (error) {
-    console.error("Error al procesar el pago:", error);
-  }
-});
-
-window.onload = () => {
-  // Verificar si el parámetro 'payment_status' está en la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const paymentStatus = urlParams.get("payment_status");
-
-  if (paymentStatus === "success") {
-    // Mostrar el mensaje de éxito con SweetAlert
-    Swal.fire({
-      title: "¡Pago realizado con éxito!",
-      icon: "success",
-      confirmButtonText: "Aceptar",
-      customClass: {
-        popup: "custom-popup",
-        title: "custom-title",
-        confirmButton: "custom-confirm-btn",
-      },
-    });
-  } else if (paymentStatus === "cancelled") {
-    // Mostrar el mensaje de cancelación con SweetAlert
-    Swal.fire({
-      title: "Pago cancelado",
-      icon: "error",
-      confirmButtonText: "Aceptar",
-      customClass: {
-        popup: "custom-popup",
-        title: "custom-title",
-        confirmButton: "custom-confirm-btn",
-      },
-    });
-  }
-};
