@@ -8,25 +8,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 const app = express();
 
-// Importa RedisStore y crea el cliente de Redis
-const RedisStore = require("connect-redis")(session);
-const redis = require("redis");
-
-// Crea un cliente Redis, asegúrate de que el host y el puerto sean correctos
-const client = redis.createClient({
-  host: process.env.REDIS_HOST || "localhost", // Usa variable de entorno para el host de Redis
-  port: process.env.REDIS_PORT || 6379, // Puerto de Redis
-});
-
-// Maneja errores de conexión de Redis
-client.on("error", (err) => {
-  console.log("Error de conexión a Redis:", err);
-});
-
-// Configura el middleware de sesión con RedisStore
 app.use(
   session({
-    store: new RedisStore({ client }), // Usando RedisStore para almacenar las sesiones
     secret: process.env.JWT_SECRET, // Asegúrate de que la variable JWT_SECRET esté configurada
     resave: false, // No vuelve a guardar la sesión si no ha cambiado
     saveUninitialized: false, // No guarda sesiones que no están inicializadas
