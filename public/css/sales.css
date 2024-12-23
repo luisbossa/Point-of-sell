@@ -49,7 +49,6 @@
     flex-direction: column;
     padding-bottom: var(--dl-space-space-unit);
     justify-content: flex-start;
-    background-color: #9BBEC2;
 }
 
 .sales-logo {
@@ -452,8 +451,6 @@
 
 /* Cuerpo de la tabla */
 .saleTbl-content {
-    overflow-x: auto;
-    max-width: 100%;
     height: 452px;
     overflow: auto;
 }

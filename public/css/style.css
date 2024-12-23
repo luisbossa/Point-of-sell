@@ -33,11 +33,20 @@
 }
 
 html {
-  line-height: 1.15;
+  font-family: Inter;
+  font-size: 1rem;
+  overflow: hidden;
 }
 
 body {
   margin: 0;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: 1.15;
+  user-select: none;
 }
 
 * {
@@ -122,23 +131,6 @@ img {
   display: block;
 }
 
-html {
-  scroll-behavior: smooth
-}
 
-html {
-  font-family: Inter;
-  font-size: 16px;
-}
 
-body {
-  font-weight: 400;
-  font-style: normal;
-  text-decoration: none;
-  text-transform: none;
-  letter-spacing: normal;
-  line-height: 1.15;
-  color: var(--dl-color-theme-neutral-dark);
-  background: var(--dl-color-theme-neutral-light);
-  fill: var(--dl-color-theme-neutral-dark);
-}
+

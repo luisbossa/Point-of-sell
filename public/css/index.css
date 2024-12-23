@@ -35,8 +35,23 @@
     --line-h: 1.15;
 }
 
-body {
-    user-select: none;
+/* Personalización de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: var(--radius-8);
+    border: 2px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }
 
 .main-container {
