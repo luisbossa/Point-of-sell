@@ -10,13 +10,13 @@ const app = express();
 
 app.use(
   session({
-    secret: process.env.JWT_SECRET, // Asegúrate de que la variable JWT_SECRET esté configurada
-    resave: false, // No vuelve a guardar la sesión si no ha cambiado
-    saveUninitialized: false, // No guarda sesiones que no están inicializadas
+    secret: process.env.JWT_SECRET, 
+    resave: false, 
+    saveUninitialized: false, 
     cookie: {
-      secure: process.env.NODE_ENV === "production", // Asegúrate de que "secure" esté en true solo en producción
-      httpOnly: true, // Impide acceso a cookies desde JavaScript en el cliente
-      maxAge: 1000 * 60 * 60 * 24 * 7, // La sesión expirará después de 1 semana
+      secure: process.env.NODE_ENV === "production", 
+      httpOnly: true, 
+      maxAge: 1000 * 60 * 60 * 24 * 7, 
     },
   })
 );
