@@ -49,7 +49,7 @@
                     <br />
                 </span>
                 <span class="users-type-text">
-                    (<%= user.job_name %>)
+                    (<%= user.job_name %>) <!-- Aquí mostramos el job_name del usuario actual -->
                 </span>
             </div>
 
@@ -83,7 +83,7 @@
             <h2 class="users-info-heading black-c">Administración de usuarios</h2>
         </div>
 
-        <form id="form1" class="users-form" method="POST" action="/users" enctype="multipart/form-data">
+        <form id="form1" class="users-form form-gap" method="POST" action="/users" enctype="multipart/form-data">
             <input name="_method" type="hidden" value="PUT">
 
             <div class="users-row-container">
@@ -100,6 +100,21 @@
                         autocomplete="name" />
                 </div>
             </div>
+
+            <div class="msm-div">
+                <% if (errorMessage && !successMessage) { %>
+                    <p class="errorMessage">
+                        <%= errorMessage %>
+                    </p>
+                    <% } %>
+
+                        <% if (successMessage && !errorMessage) { %>
+                            <p class="successMessage">
+                                <%= successMessage %>
+                            </p>
+                            <% } %>
+            </div>
+
             <div class="users-row-container">
                 <div class="users-div">
                     <label for="email" class="users-label">Email</label>
@@ -112,7 +127,22 @@
                         autocomplete="address" />
                 </div>
             </div>
-            <div class="users-row-container">
+
+            <div class="msm-div">
+                <% if (errorMessage2) { %>
+                    <p class="errorMessage">
+                        <%= errorMessage2 %>
+                    </p>
+                    <% } %>
+
+                        <% if (successMessage2) { %>
+                            <p class="successMessage">
+                                <%= successMessage2 %>
+                            </p>
+                            <% } %>
+            </div>
+
+            <div class="users-row-container row-gap">
                 <div class="users-div">
                     <label for="province" class="users-label">Provincia</label>
                     <input id="province" name="province" type="text" class="users-textinput"
@@ -166,22 +196,20 @@
             </div>
         </div>
         <div class="msm-div">
-            <% if (errorMessage) { %>
+            <% if (passErrorMessage) { %>
                 <div class="errorMessage">
-                    <%= errorMessage %>
+                    <%= passErrorMessage %>
                 </div>
                 <% } %>
+
+                    <% if (passSuccessMessage) { %>
+                        <div class="successMessage">
+                            <%= passSuccessMessage %>
+                        </div>
+                        <% } %>
         </div>
         <div class="users-changepass-div">
             <button type="submit" class="user-submit-btn">Cambiar Contraseña</button>
-        </div>
-
-        <div class="msm-div">
-            <% if (successMessage) { %>
-                <div class="successMessage">
-                    <%= successMessage %>
-                </div>
-                <% } %>
         </div>
     </form>
 </div>

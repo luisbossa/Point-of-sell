@@ -1,3 +1,40 @@
+:root {
+    --size-xs: 16px;
+    --size-sm: 48px;
+    --size-m: 96px;
+    --size-l: 144px;
+    --size-xl: 192px;
+    --size-xxl: 288px;
+    --size-maxwidth: 1400px;
+    --space-halfunit: 8px;
+    --space-unit: 16px;
+    --space-20: 20px;
+    --space-oneandhalfunits: 24px;
+    --space-twounits: 32px;
+    --space-threeunits: 48px;
+    --space-fourunits: 64px;
+    --space-fiveunits: 80px;
+    --space-sixunits: 96px;
+    --radius-2: 2px;
+    --radius-4: 4px;
+    --radius-8: 8px;
+    --inputradius: 24px;
+    --btnradius: 24px;
+    --radius-round: 50%;
+    --clr-mate: #424242;
+    --clr-white: #fff;
+    --clr-red: #a73737;
+    --clr-blue: #104C70;
+    --clr-orange: #df671e;
+    --clr-yellow: #E6AC00;
+    --clr-light-gray: #F8F8F8;
+    --clr-neutral-dark: #2d2d2d;
+    --clr-neutral-light: #FBFAF9;
+    --clr-shine-black: linear-gradient(rgb(67, 67, 67), rgb(28, 28, 28));
+    --letter-s: 0.07rem;
+    --line-h: 1.15;
+}
+
 .user-submit-btn {
     width: auto;
     position: relative;
@@ -326,6 +363,10 @@
     gap: 5px;
 }
 
+.form-gap {
+    margin-bottom: var(--space-twounits);
+}
+
 .users-row-container {
     width: 100%;
     height: auto;
@@ -334,6 +375,10 @@
     align-items: end;
     justify-content: center;
     gap: var(--space-unit);
+}
+
+.row-gap {
+    margin-bottom: var(--space-unit);
 }
 
 .users-textinput {

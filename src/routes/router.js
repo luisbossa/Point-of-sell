@@ -64,7 +64,6 @@ router.get("/products", (req, res) => {
 });
 
 router.get("/", authController.isAuthenticated, (req, res) => {
-  // Consulta para obtener los primeros 18 productos
   connection.query(
     "SELECT product_id, product_name, product_image, price, category_id FROM product LIMIT 18",
     (err, products) => {
@@ -73,7 +72,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
         return res.status(500).send("Error al obtener los productos");
       }
 
-      // Consulta para obtener los productos 19-36
       connection.query(
         "SELECT product_id, product_name, product_image, price, category_id FROM product LIMIT 18, 18",
         (err, moreProducts) => {
@@ -86,7 +84,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
               .send("Error al obtener los productos adicionales");
           }
 
-          // Consulta para obtener los productos 37-54
           connection.query(
             "SELECT product_id, product_name, product_image, price, category_id FROM product LIMIT 36, 18",
             (err, extraProducts) => {
@@ -99,7 +96,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
                   .send("Error al obtener productos adicionales extra");
               }
 
-              // Consulta para obtener los productos 55-72 (nueva consulta)
               connection.query(
                 "SELECT product_id, product_name, product_image, price, category_id FROM product LIMIT 54, 18", // Agregar más productos
                 (err, moreExtraProducts) => {
@@ -112,7 +108,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
                       .send("Error al obtener más productos");
                   }
 
-                  // Obtener los colores de fondo de las categorías
                   connection.query(
                     "SELECT category_id, background_color FROM categories",
                     (err, categoryColors) => {
@@ -125,7 +120,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
                           .send("Error al obtener colores de categorías");
                       }
 
-                      // Función para obtener el color de fondo de una categoría
                       const getBackgroundColorByCategoryId = (categoryId) => {
                         const category = categoryColors.find(
                           (c) => c.category_id === categoryId
@@ -133,7 +127,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
                         return category ? category.background_color : "#FFFFFF"; // Fallback a blanco si no se encuentra el color
                       };
 
-                      // Asignar el color de fondo a cada producto
                       products.forEach((product) => {
                         product.backgroundColor =
                           getBackgroundColorByCategoryId(product.category_id);
@@ -153,14 +146,13 @@ router.get("/", authController.isAuthenticated, (req, res) => {
 
                       const hasMoreProducts = moreExtraProducts.length > 0;
 
-                      // Renderizar la vista pasando todos los productos y sus colores de fondo
                       res.render("index", {
                         user: req.user,
                         productos: products,
                         moreProductos: moreProducts,
                         extraProductos: extraProducts,
                         moreExtraProductos: moreExtraProducts,
-                        hasMoreProducts: hasMoreProducts, // Pasamos los productos 55-72
+                        hasMoreProducts: hasMoreProducts, 
                       });
                     }
                   );
@@ -178,9 +170,12 @@ router.get("/", authController.isAuthenticated, (req, res) => {
 router.get("/users", authController.isAuthenticated, (req, res) => {
   res.render("users", {
     user: req.user,
-    otherUsers: res.locals.otherUsers || [],
     successMessage: "",
+    successMessage2: "",
+    passSuccessMessage: "",
     errorMessage: "",
+    errorMessage2: "",
+    passErrorMessage: ""
   });
 });
 
@@ -315,6 +310,8 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
 
 router.get("/get-sales-data", salesDetailsController.salesDetails);
 
+
 router.post("/cardPayment", cardPaymentController.cardPayment);
+
 
 module.exports = router;
