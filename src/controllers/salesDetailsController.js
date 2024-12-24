@@ -55,7 +55,7 @@ exports.salesDetails = async (req, res) => {
       results = results.map((sale) => {
         // Usar la fecha ya convertida en la consulta SQL, es decir, `datetime_sold_local`
         sale.datetime_sold = moment(sale.datetime_sold_local).format(
-          "YYYY-MM-DD"
+          "DD-MM-YYYY"
         );
         return sale;
       });
