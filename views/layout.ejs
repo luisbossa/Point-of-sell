@@ -58,8 +58,8 @@
                 showOtherMonths: true,
                 selectOtherMonths: true,
                 onSelect: function (dateText) {
-                    // La fecha seleccionada se guarda
-                    var selectedDate = dateText;
+                    // Convertir la fecha seleccionada a UTC
+                    var selectedDate = moment(dateText, "yy-MM-dd").utc().format("YYYY-MM-DD");
 
                     // Actualizar el título dinámicamente
                     updateSalesInfoHeading(selectedDate);
@@ -129,13 +129,16 @@
 
             // Recorrer los datos y agregarlos a la tabla
             salesData.forEach(function (sale) {
+                // Convertir la fecha de venta (datetime_sold) a la zona horaria local
+                var localDate = moment.utc(sale.datetime_sold).local().format("YYYY-MM-DD HH:mm:ss");
+
                 var row = "<tr>" +
                     "<td>" + sale.sale_transaction_id + "</td>" +
                     "<td>" + sale.user + " " + sale.name + "</td>" +
                     "<td>₡ " + sale.final_price + "</td>" +
                     "<td>₡ " + sale.tax + "</td>" +
                     "<td>" + sale.qty_item + "</td>" +
-                    "<td>" + sale.datetime_sold + "</td>" +
+                    "<td>" + localDate + "</td>" +
                     "</tr>";
                 tableBody.append(row);
 
