@@ -129,16 +129,13 @@
 
             // Recorrer los datos y agregarlos a la tabla
             salesData.forEach(function (sale) {
-                // Convertir la fecha de venta (datetime_sold) a la zona horaria local
-                var localDate = moment.utc(sale.datetime_sold).local().format("YYYY-MM-DD HH:mm:ss");
-
                 var row = "<tr>" +
                     "<td>" + sale.sale_transaction_id + "</td>" +
                     "<td>" + sale.user + " " + sale.name + "</td>" +
                     "<td>₡ " + sale.final_price + "</td>" +
                     "<td>₡ " + sale.tax + "</td>" +
                     "<td>" + sale.qty_item + "</td>" +
-                    "<td>" + localDate + "</td>" +
+                    "<td>" + sale.datetime_sold + "</td>" +
                     "</tr>";
                 tableBody.append(row);
 

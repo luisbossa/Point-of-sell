@@ -6,42 +6,43 @@ exports.salesDetails = async (req, res) => {
     // Obtener la fecha seleccionada desde la query string
     const selectedDate = req.query.date;
 
-    // Convertir la fecha seleccionada a UTC al inicio del día (00:00:00)
-    const startOfDayUTC = moment.utc(selectedDate + " 00:00:00", "YYYY-MM-DD HH:mm:ss");
+    // Agregar la hora 00:00:00 si solo se pasa la fecha
+    const fullDate = selectedDate + " 00:00:00"; // Convertir la fecha a formato completo con hora
 
-    // Convertir la fecha seleccionada al final del día (23:59:59) en UTC
-    const endOfDayUTC = moment.utc(selectedDate + " 23:59:59", "YYYY-MM-DD HH:mm:ss");
-
-    // Consulta SQL con fecha y hora completas
+    // Consulta SQL con fecha y hora completas y conversión de zona horaria
     const query = `
-      SELECT 
-          sale_transaction.sale_transaction_id,
-          sale_transaction.product_id,
-          sale_transaction.employee_number,
-          sale_transaction.qty_item,
-          sale_transaction.item_total,
-          sale_transaction.total_sum,
-          sale_transaction.tax,
-          sale_transaction.final_price,
-          sale_transaction.datetime_sold,
-          product.product_name,
-          product.price,
-          product.product_image,
-          users.user,
-          users.name,
-          users.email
-      FROM 
-          sale_transaction
-      JOIN 
-          product ON sale_transaction.product_id = product.product_id
-      JOIN 
-          users ON sale_transaction.employee_number = users.id
-      WHERE 
-          sale_transaction.datetime_sold >= ? AND sale_transaction.datetime_sold < ? 
+    SELECT 
+        sale_transaction.sale_transaction_id,
+        sale_transaction.product_id,
+        sale_transaction.employee_number,
+        sale_transaction.qty_item,
+        sale_transaction.item_total,
+        sale_transaction.total_sum,
+        sale_transaction.tax,
+        sale_transaction.final_price,
+        CONVERT_TZ(sale_transaction.datetime_sold, '+00:00', '-06:00') AS datetime_sold_local, -- Convertir UTC a UTC-6
+        product.product_name,
+        product.price,
+        product.product_image,
+        users.user,
+        users.name,
+        users.email
+    FROM 
+        sale_transaction
+    JOIN 
+        product ON sale_transaction.product_id = product.product_id
+    JOIN 
+        users ON sale_transaction.employee_number = users.id
+    WHERE 
+        sale_transaction.datetime_sold >= ? AND sale_transaction.datetime_sold < ? 
     `;
 
+    // Para asegurarnos de que obtenemos todas las ventas del día completo, comparamos entre el inicio del día (00:00:00) y el siguiente día (00:00:00)
+    const startOfDay = fullDate; // El inicio del día (00:00:00)
+    const endOfDay = selectedDate + " 23:59:59"; // El final del día (23:59:59)
+
     // Ejecutar la consulta SQL pasando los valores correctos
-    connection.query(query, [startOfDayUTC.format("YYYY-MM-DD HH:mm:ss"), endOfDayUTC.format("YYYY-MM-DD HH:mm:ss")], (err, results) => {
+    connection.query(query, [startOfDay, endOfDay], (err, results) => {
       if (err) {
         console.error("Error en la consulta:", err);
         return res
@@ -49,10 +50,12 @@ exports.salesDetails = async (req, res) => {
           .json({ error: "Error al obtener los datos de las ventas" });
       }
 
-      // Convertir las fechas de la base de datos a UTC y luego formatearlas para mostrar
+      // Convertir las fechas a un formato legible (ejemplo: yyyy-mm-dd HH:mm:ss)
       results = results.map((sale) => {
-        // Convertir la fecha de la base de datos (si es necesario) a formato UTC y luego formatear
-        sale.datetime_sold = moment.utc(sale.datetime_sold).format("YYYY-MM-DD HH:mm:ss");
+        // Usar la fecha ya convertida en la consulta SQL, es decir, `datetime_sold_local`
+        sale.datetime_sold = moment(sale.datetime_sold_local).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
         return sale;
       });
 
@@ -64,3 +67,4 @@ exports.salesDetails = async (req, res) => {
     res.status(500).json({ error: "Error al procesar la solicitud" });
   }
 };
+
