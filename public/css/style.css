@@ -46,6 +46,7 @@ body {
   text-transform: none;
   letter-spacing: normal;
   line-height: 1.15;
+  user-select: none;
 }
 
 * {
