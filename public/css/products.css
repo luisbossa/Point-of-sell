@@ -35,6 +35,30 @@
     --line-h: 1.15;
 }
 
+.pdelete-btn {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--clr-white);
+    padding: 0.3rem 7px;
+    border-radius: var(--radius-4);
+    letter-spacing: var(--letter-s);
+    background-color: var(--clr-red);
+    outline: 0;
+    border: 0;
+    white-space: nowrap;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35)), url("/images/bg02.webp");
+    box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.35), inset 0px 2px 1px 0px rgba(255, 255, 255, 0.35);
+    transition: background-color 0.2s ease-in-out;
+    -moz-transition: background-color 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out;
+    -ms-transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+}
+
 .inventory-container1 {
     gap: var(--dl-space-space-halfunit);
     width: 100%;
@@ -331,7 +355,7 @@
     border-radius: var(--radius-4);
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-bottom:  1px solid var(--clr-mate);
+    border-bottom: 1px solid var(--clr-mate);
 }
 
 /* Estilo general de la tabla */
