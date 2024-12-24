@@ -7,7 +7,7 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
     Swal.fire({
       title: "Verificar pago",
       html: `                    
-            <p><strong>Total a pagar:</strong> ₡0.00</p>
+            <p><strong>Total a pagar:</strong> ₡0</p>
             <input type="text" id="payment" class="swal2-custom-input" placeholder="Ingresar monto" disabled/>
             
             <div class="swal2-price-div">
