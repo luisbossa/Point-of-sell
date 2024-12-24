@@ -871,6 +871,7 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
     color: var(--clr-white);
     border-radius: 8px;
     background-color: #4091bf;
+    text-transform: uppercase;
     font-weight: bold;
     font-size: 15.5px;
     outline: 0;
