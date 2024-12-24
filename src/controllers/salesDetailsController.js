@@ -7,8 +7,12 @@ exports.salesDetails = async (req, res) => {
     const selectedDate = req.query.date;
 
     // Asegurarse de que el formato de las fechas sea correcto
-    const startOfDay = moment(selectedDate).startOf('day').format('YYYY-MM-DD HH:mm:ss');  // Inicio del día a las 00:00:00
-    const endOfDay = moment(selectedDate).endOf('day').format('YYYY-MM-DD HH:mm:ss'); // Fin del día a las 23:59:59
+    const startOfDay = moment(selectedDate)
+      .startOf("day")
+      .format("YYYY-MM-DD HH:mm"); // Inicio del día a las 00:00:00
+    const endOfDay = moment(selectedDate)
+      .endOf("day")
+      .format("YYYY-MM-DD HH:mm"); // Fin del día a las 23:59:59
 
     // Consulta SQL con fecha y hora completas y conversión de zona horaria
     const query = `
