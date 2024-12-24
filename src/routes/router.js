@@ -152,7 +152,7 @@ router.get("/", authController.isAuthenticated, (req, res) => {
                         moreProductos: moreProducts,
                         extraProductos: extraProducts,
                         moreExtraProductos: moreExtraProducts,
-                        hasMoreProducts: hasMoreProducts, 
+                        hasMoreProducts: hasMoreProducts,
                       });
                     }
                   );
@@ -175,7 +175,7 @@ router.get("/users", authController.isAuthenticated, (req, res) => {
     passSuccessMessage: "",
     errorMessage: "",
     errorMessage2: "",
-    passErrorMessage: ""
+    passErrorMessage: "",
   });
 });
 
@@ -224,26 +224,32 @@ router.post("/updateProduct/:id", productController.updateProduct);
 router.delete("/deleteProducts/:id", productController.deleteProducts);
 
 router.get("/sales", authController.isAuthenticated, (req, res) => {
-  // Obtener la fecha seleccionada, por defecto la fecha actual
-  const selectedDate = req.query.date || moment().format("YYYY-MM-DD"); // Usamos moment para obtener la fecha actual
+  // Obtener la fecha seleccionada desde la query string
+  const selectedDate = req.query.date;
+
+  // Agregar la hora 00:00:00 si solo se pasa la fecha
   const fullDate = selectedDate + " 00:00:00"; // Convertir la fecha a formato completo con hora
 
-  // Definir los rangos de tiempo para la consulta SQL
-  const startOfDay = fullDate; // El inicio del día (00:00:00)
-  const endOfDay = selectedDate + " 23:59:59"; // El final del día (23:59:59)
+  // Asegurarse de que el formato de las fechas sea correcto
+  const startOfDay = moment(selectedDate)
+    .startOf("day")
+    .format("YYYY-MM-DD HH:mm:ss"); // Inicio del día a las 00:00:00
+  const endOfDay = moment(selectedDate)
+    .endOf("day")
+    .format("YYYY-MM-DD HH:mm:ss"); // Fin del día a las 23:59:59
 
-  // Realizar la consulta SQL para obtener las ventas
+  // Consulta SQL con fecha y hora completas y conversión de zona horaria
   const query = `
-    SELECT 
-      sale_transaction.sale_transaction_id,
-      sale_transaction.product_id,
-      sale_transaction.employee_number,
-      sale_transaction.qty_item,
-      sale_transaction.item_total,
-      sale_transaction.total_sum,
-      sale_transaction.tax,
-      sale_transaction.final_price,
-      sale_transaction.datetime_sold,
+      SELECT 
+          sale_transaction.sale_transaction_id,
+          sale_transaction.product_id,
+          sale_transaction.employee_number,
+          sale_transaction.qty_item,
+          sale_transaction.item_total,
+          sale_transaction.total_sum,
+          sale_transaction.tax,
+          sale_transaction.final_price,
+          CONVERT_TZ(sale_transaction.datetime_sold, '+00:00', '-06:00') AS datetime_sold_local, -- Convertir UTC a UTC-6
       product.product_name,
       product.price,
       product.product_image,
@@ -310,8 +316,6 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
 
 router.get("/get-sales-data", salesDetailsController.salesDetails);
 
-
 router.post("/cardPayment", cardPaymentController.cardPayment);
-
 
 module.exports = router;
