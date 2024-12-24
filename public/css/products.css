@@ -350,12 +350,9 @@
 /* Estilo del contenedor de la tabla */
 .itable-container {
     width: 100%;
-    margin: 5px 0 0 0;
     color: var(--clr-mate);
     border-radius: var(--radius-4);
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid var(--clr-mate);
 }
 
 /* Estilo general de la tabla */
@@ -387,9 +384,9 @@
 
 /* Estilo del cuerpo de la tabla */
 .itable-container .tbl-content {
-    height: 345px;
+    height: 347px;
     overflow-y: auto;
-    margin-top: 0px;
+
 }
 
 /* Estilo de las celdas de la cabecera */
@@ -581,7 +578,7 @@
 }
 
 .msm-div {
-    height: 20px;
+    height: 21px;
 }
 
 .product-imgFile {
