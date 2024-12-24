@@ -185,3 +185,28 @@ function updateChange(total) {
     document.getElementById("change").textContent = change.toFixed(2);
   }
 }
+
+const checkout = document.getElementById("checkout-btn");
+
+checkout.addEventListener("click", async () => {
+  // Obtener el carrito
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  // Verificar si el carrito está vacío
+  if (cart.length === 0) {
+    // Mostrar un mensaje con SweetAlert si el carrito está vacío
+    Swal.fire({
+      title: "No hay productos",
+      icon: "warning",
+      confirmButtonText: "Entendido",
+      customClass: {
+        popup: "custom-popup",
+        title: "custom-title",
+        confirmButton: "custom-confirm-btn",
+        // Estilos personalizados para el ícono
+        icon: "custom-icon",
+      },
+    });
+    return; // Detener la ejecución si el carrito está vacío
+  }
+});
