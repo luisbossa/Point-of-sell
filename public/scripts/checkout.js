@@ -70,7 +70,7 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
           </div>
           <p class="p-flex">
             <strong>Cambio:</strong> 
-            <p class="change">₡ <span class="change" id="change">0</span></p>
+            <span class="change" id="change">₡ 0</span>
           </p>
         `,
     showCancelButton: true,
@@ -189,9 +189,9 @@ function updateChange(totalConIva) {
   const changeElement = document.getElementById("change");
   if (!isNaN(payment)) {
     const change = payment - totalConIva;
-    changeElement.textContent = change >= 0 ? change.toFixed(2) : "0";
+    changeElement.textContent = change >= 0 ? "₡ " + change.toFixed(2) : "₡ 0";
   } else {
-    changeElement.textContent = "0";
+    changeElement.textContent = "₡ 0";
   }
 }
 const checkout = document.getElementById("checkout-btn");
