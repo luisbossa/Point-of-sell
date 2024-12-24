@@ -24,133 +24,132 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> <!-- Usamos la versión 1.12.1 -->
 
     <script type="text/javascript">
-       $(document).ready(function () {
-    // Configuración del datepicker en español
-    $.datepicker.regional["es"] = {
-        closeText: "Hecho",
-        prevText: "Anterior",
-        nextText: "Siguiente",
-        currentText: "Hoy",
-        monthNames: [
-            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-        ],
-        monthNamesShort: [
-            "Ene", "Feb", "Mar", "Abr", "May", "Jun",
-            "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
-        ],
-        dayNames: [
-            "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
-        ],
-        dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-        dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
-        weekHeader: "Semana",
-        dateFormat: "yy-mm-dd", // Formato de la fecha (año-mes-día)
-        firstDay: 1,  // Comienza la semana el lunes
-        isRTL: false
-    };
+        $(document).ready(function () {
+            // Configuración del datepicker en español
+            $.datepicker.regional["es"] = {
+                closeText: "Hecho",
+                prevText: "Anterior",
+                nextText: "Siguiente",
+                currentText: "Hoy",
+                monthNames: [
+                    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                ],
+                monthNamesShort: [
+                    "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+                    "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+                ],
+                dayNames: [
+                    "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
+                ],
+                dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
+                weekHeader: "Semana",
+                dateFormat: "yy-mm-dd", // Formato de la fecha (año-mes-día)
+                firstDay: 1,  // Comienza la semana el lunes
+                isRTL: false
+            };
 
-    // Aplicar la configuración regional para español
-    $.datepicker.setDefaults($.datepicker.regional["es"]);
+            // Aplicar la configuración regional para español
+            $.datepicker.setDefaults($.datepicker.regional["es"]);
 
-    // Inicializar el datepicker
-    $("#datepicker").datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        onSelect: function (dateText) {
-            // Convertir la fecha seleccionada a formato local
-            var selectedDate = moment(dateText).local().format("YYYY-MM-DD");
+            // Inicializar el datepicker
+            $("#datepicker").datepicker({
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                onSelect: function (dateText) {
+                    // La fecha seleccionada se guarda
+                    var selectedDate = dateText;
 
-            // Actualizar el título dinámicamente
-            updateSalesInfoHeading(selectedDate);
+                    // Actualizar el título dinámicamente
+                    updateSalesInfoHeading(selectedDate);
 
-            // Enviar la fecha al servidor para obtener los datos
-            $.ajax({
-                url: '/get-sales-data', // Asegúrate de que esta URL coincide con la ruta definida en el servidor
-                method: 'GET',
-                data: { date: selectedDate }, // Enviar la fecha seleccionada
-                success: function (response) {
-                    // Procesar los resultados de la consulta y mostrar los datos en la página
-                    console.log(response); // Mostrar los resultados en la consola
-                    displaySalesData(response); // Llamar a una función para mostrar los datos
-                },
-                error: function (err) {
-                    console.error('Error al obtener los datos', err);
+                    // Enviar la fecha al servidor para obtener los datos
+                    $.ajax({
+                        url: '/get-sales-data', // Asegúrate de que esta URL coincide con la ruta definida en el servidor
+                        method: 'GET',
+                        data: { date: selectedDate }, // Enviar la fecha seleccionada
+                        success: function (response) {
+                            // Procesar los resultados de la consulta y mostrar los datos en la página
+                            console.log(response); // Mostrar los resultados en la consola
+                            displaySalesData(response); // Llamar a una función para mostrar los datos
+                        },
+                        error: function (err) {
+                            console.error('Error al obtener los datos', err);
+                        }
+                    });
                 }
             });
+
+            // Inicializar el título con la fecha actual cuando se carga la página
+            var currentDate = new Date();
+            var formattedDate = formatDateToString(currentDate);
+            updateSalesInfoHeading(formattedDate);
+        });
+
+        // Función para formatear la fecha en formato yyyy-mm-dd
+        function formatDateToString(date) {
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Asegurarse que el mes esté en dos dígitos
+            var day = date.getDate().toString().padStart(2, '0'); // Asegurarse que el día esté en dos dígitos
+            return year + '-' + month + '-' + day;
         }
-    });
 
-    // Inicializar el título con la fecha actual cuando se carga la página
-    var currentDate = new Date();
-    var formattedDate = formatDateToString(currentDate);
-    updateSalesInfoHeading(formattedDate);
-});
+        // Función para actualizar el título dinámicamente
+        function updateSalesInfoHeading(date) {
+            // Formatear la fecha seleccionada (por ejemplo: "2024, octubre, 2")
+            var dateParts = date.split("-"); // Dividir la fecha en partes (año, mes, día)
+            var year = dateParts[0]; // Año
+            var monthIndex = parseInt(dateParts[1], 10) - 1; // Índice del mes (0 basado)
+            var day = dateParts[2]; // Día
 
-// Función para formatear la fecha en formato yyyy-mm-dd
-function formatDateToString(date) {
-    var year = date.getFullYear();
-    var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Asegurarse que el mes esté en dos dígitos
-    var day = date.getDate().toString().padStart(2, '0'); // Asegurarse que el día esté en dos dígitos
-    return year + '-' + month + '-' + day;
-}
+            // Meses en español
+            var months = [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            ];
 
-// Función para actualizar el título dinámicamente
-function updateSalesInfoHeading(date) {
-    // Formatear la fecha seleccionada (por ejemplo: "2024, octubre, 2")
-    var dateParts = date.split("-"); // Dividir la fecha en partes (año, mes, día)
-    var year = dateParts[0]; // Año
-    var monthIndex = parseInt(dateParts[1], 10) - 1; // Índice del mes (0 basado)
-    var day = dateParts[2]; // Día
+            // Obtener el nombre del mes
+            var monthName = months[monthIndex];
 
-    // Meses en español
-    var months = [
-        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    ];
+            // Actualizar el título en el DOM
+            $(".sales-info-heading").text("Del periodo " + day + " de " + monthName + " de " + year);
+        }
 
-    // Obtener el nombre del mes
-    var monthName = months[monthIndex];
+        // Función para mostrar los datos de ventas en la tabla
+        function displaySalesData(salesData) {
+            // Limpiar la tabla antes de insertar los nuevos datos
+            var tableBody = $(".saleTbl-content tbody");
+            tableBody.empty();
 
-    // Actualizar el título en el DOM
-    $(".sales-info-heading").text("Del periodo " + day + " de " + monthName + " de " + year);
-}
+            // Variables para sumar el total de ventas, impuestos y totales de los items
+            var totalSales = 0;
+            var totalTax = 0;
+            var itemTotal = 0;
 
-// Función para mostrar los datos de ventas en la tabla
-function displaySalesData(salesData) {
-    // Limpiar la tabla antes de insertar los nuevos datos
-    var tableBody = $(".saleTbl-content tbody");
-    tableBody.empty();
+            // Recorrer los datos y agregarlos a la tabla
+            salesData.forEach(function (sale) {
+                var row = "<tr>" +
+                    "<td>" + sale.sale_transaction_id + "</td>" +
+                    "<td>" + sale.user + " " + sale.name + "</td>" +
+                    "<td>₡ " + sale.final_price + "</td>" +
+                    "<td>₡ " + sale.tax + "</td>" +
+                    "<td>" + sale.qty_item + "</td>" +
+                    "<td>" + sale.datetime_sold + "</td>" +
+                    "</tr>";
+                tableBody.append(row);
 
-    // Variables para sumar el total de ventas, impuestos y totales de los items
-    var totalSales = 0;
-    var totalTax = 0;
-    var itemTotal = 0;
+                // Sumar el precio de venta, impuestos y total de los items
+                totalSales += parseFloat(sale.final_price);
+                totalTax += parseFloat(sale.tax);
+                itemTotal += parseInt(sale.qty_item);
+            });
 
-    // Recorrer los datos y agregarlos a la tabla
-    salesData.forEach(function (sale) {
-        var row = "<tr>" +
-            "<td>" + sale.sale_transaction_id + "</td>" +
-            "<td>" + sale.user + " " + sale.name + "</td>" +
-            "<td>₡ " + sale.final_price + "</td>" +
-            "<td>₡ " + sale.tax + "</td>" +
-            "<td>" + sale.qty_item + "</td>" +
-            "<td>" + sale.datetime_sold + "</td>" +
-            "</tr>";
-        tableBody.append(row);
-
-        // Sumar el precio de venta, impuestos y total de los items
-        totalSales += parseFloat(sale.final_price);
-        totalTax += parseFloat(sale.tax);
-        itemTotal += parseInt(sale.qty_item);
-    });
-
-    // Actualizar los totales de ventas, impuestos y totales de los items en la página
-    $("#sales-num-text1").text("₡ " + totalSales.toFixed(2)); // Total de ventas
-    $("#sales-num-text2").text("₡ " + totalTax.toFixed(2)); // Total de impuestos
-    $("#sales-num-text3").text("₡ " + itemTotal); // Total de los items
-}
-
+            // Actualizar los totales de ventas, impuestos y totales de los items en la página
+            $("#sales-num-text1").text("₡ " + totalSales.toFixed(2)); // Total de ventas
+            $("#sales-num-text2").text("₡ " + totalTax.toFixed(2)); // Total de impuestos
+            $("#sales-num-text3").text("₡ " + itemTotal); // Total de los items
+        }
     </script>
 </head>
 
