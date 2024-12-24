@@ -126,9 +126,7 @@ function updateCartSummary() {
   ).textContent = `Cantidad de productos: ${totalQuantity}`;
 
   // Actualizar el resumen con IVA y el total
-  document.getElementById("ivaAmount").textContent = `IVA (10%): ₡ ${iva.toFixed(
-    2
-  )}`;
+  document.getElementById("ivaAmount").textContent = `IVA (10%): ₡ ${iva}`;
   document.getElementById(
     "totalAmountText"
   ).textContent = `Total: ₡ ${totalWithIVA}`;
