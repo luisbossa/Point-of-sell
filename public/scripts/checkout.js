@@ -59,14 +59,14 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
   Swal.fire({
     title: "Verificar pago",
     html: `                    
-          <p><strong>Total a pagar:</strong> ₡${totalConIva.toFixed(2)}</p>
+          <p><strong>Total a pagar:</strong> ₡ ${totalConIva}</p>
           <input type="text" id="payment" class="swal2-custom-input" placeholder="Ingresar monto" oninput="updateChange(${totalConIva})" />
           
           <div class="swal2-price-div">
-            <button class="payment-btn" data-value="5000">₡5000</button>
-            <button class="payment-btn" data-value="10000">₡10000</button>
-            <button class="payment-btn" data-value="15000">₡15000</button>
-            <button class="payment-btn" data-value="20000">₡20000</button>
+            <button class="payment-btn" data-value="5000">₡ 5000</button>
+            <button class="payment-btn" data-value="10000">₡ 10000</button>
+            <button class="payment-btn" data-value="15000">₡ 15000</button>
+            <button class="payment-btn" data-value="20000">₡ 20000</button>
           </div>
           <p class="p-flex">
             <strong>Cambio:</strong> 
@@ -150,11 +150,10 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          total_sum: parseFloat(totalConIva.toFixed(2)), // Total con IVA
+          total_sum: parseFloat(totalConIva), // Total con IVA
           employee_number: 1, // Número de empleado
           item_total: item_total,
-          //tax: parseFloat(tax.toFixed(2)), // IVA
-          finalPrice: parseFloat(finalPrice.toFixed(2)),
+          finalPrice: parseFloat(finalPrice),
           transactions: transactions, // Las transacciones con productos
         }),
       })
@@ -189,7 +188,7 @@ function updateChange(totalConIva) {
   const changeElement = document.getElementById("change");
   if (!isNaN(payment)) {
     const change = payment - totalConIva;
-    changeElement.textContent = change >= 0 ? "₡ " + change.toFixed(2) : "₡ 0";
+    changeElement.textContent = change >= 0 ? "₡ " + change : "₡ 0";
   } else {
     changeElement.textContent = "₡ 0";
   }

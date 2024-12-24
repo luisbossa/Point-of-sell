@@ -114,8 +114,8 @@
         <div class="amount-div">
             <div class="price-container" id="priceContainer">
                 <p id="productCount">Cantidad de productos: 0</p> <!-- Muestra la cantidad de productos -->
-                <p id="ivaAmount">IVA (10%): ₡0.00</p> <!-- Muestra el IVA -->
-                <strong id="totalAmountText">Total: ₡0.00</strong> <!-- Muestra el total con IVA -->
+                <p id="ivaAmount">IVA (10%): ₡ 0</p> <!-- Muestra el IVA -->
+                <strong id="totalAmountText">Total: ₡ 0</strong> <!-- Muestra el total con IVA -->
             </div>
             <button type="button" class="buy-btn">efectivo
                 <img width="22" height="21" alt="logo" src="/images/cash.webp" />
@@ -151,7 +151,7 @@
                         <div class="price-div">
                             <span class="price" 
                                   data-background-color="<%= product.backgroundColor %>">
-                                ₡<%= product.price %>
+                                ₡ <%= product.price %>
                             </span>
                         </div>                        
             </div>
@@ -176,7 +176,7 @@
                         <div class="price-div">
                             <span class="price" 
                                   data-background-color="<%= product.backgroundColor %>">
-                                ₡<%= product.price %>
+                                ₡ <%= product.price %>
                             </span>
                         </div>                        
             </div>
@@ -196,7 +196,7 @@
                     <div class="price-div">
                         <span class="price" 
                               data-background-color="<%= product.backgroundColor %>">
-                            ₡<%= product.price %>
+                            ₡ <%= product.price %>
                         </span>
                     </div>                    
             </div>
@@ -216,7 +216,7 @@
                     <div class="price-div">
                         <span class="price" 
                               data-background-color="<%= product.backgroundColor %>">
-                            ₡<%= product.price %>
+                            ₡ <%= product.price %>
                         </span>
                     </div>                    
             </div>

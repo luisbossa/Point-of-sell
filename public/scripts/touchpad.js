@@ -45,7 +45,7 @@ function updateCartTable() {
     row.appendChild(tdQuantity);
 
     const tdPrice = document.createElement("td");
-    tdPrice.textContent = `₡${product.price}`;
+    tdPrice.textContent = `₡ ${product.price}`;
     row.appendChild(tdPrice);
 
     const tdDelete = document.createElement("td");
@@ -126,12 +126,12 @@ function updateCartSummary() {
   ).textContent = `Cantidad de productos: ${totalQuantity}`;
 
   // Actualizar el resumen con IVA y el total
-  document.getElementById("ivaAmount").textContent = `IVA (10%): ₡${iva.toFixed(
+  document.getElementById("ivaAmount").textContent = `IVA (10%): ₡ ${iva.toFixed(
     2
   )}`;
   document.getElementById(
     "totalAmountText"
-  ).textContent = `Total: ₡${totalWithIVA.toFixed(2)}`;
+  ).textContent = `Total: ₡ ${totalWithIVA}`;
 }
 
 // Función para asignar el evento a los botones de agregar al carrito

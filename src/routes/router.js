@@ -301,9 +301,9 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
         user: req.user,
         salesData: results,
         selectedDate: selectedDate,
-        totalTax: totalTax.toFixed(2),
+        totalTax: totalTax,
         itemTotal: itemTotal,
-        totalSales: totalSales.toFixed(2),
+        totalSales: totalSales,
       });
     });
   } catch (error) {
