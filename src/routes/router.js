@@ -250,20 +250,20 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
           sale_transaction.tax,
           sale_transaction.final_price,
           CONVERT_TZ(sale_transaction.datetime_sold, '+00:00', '-06:00') AS datetime_sold_local, -- Convertir UTC a UTC-6
-      product.product_name,
-      product.price,
-      product.product_image,
-      users.user,
-      users.name,
-      users.email
-    FROM 
-      sale_transaction
-    JOIN 
-      product ON sale_transaction.product_id = product.product_id
-    JOIN 
-      users ON sale_transaction.employee_number = users.id
-    WHERE 
-      sale_transaction.datetime_sold >= ? AND sale_transaction.datetime_sold < ? 
+          product.product_name,
+          product.price,
+          product.product_image,
+          users.user,
+          users.name,
+          users.email
+      FROM 
+          sale_transaction
+      JOIN 
+          product ON sale_transaction.product_id = product.product_id
+      JOIN 
+          users ON sale_transaction.employee_number = users.id
+      WHERE 
+          sale_transaction.datetime_sold >= ? AND sale_transaction.datetime_sold < ? 
   `;
 
   // Ejecutar la consulta SQL con los parámetros de fecha
@@ -277,9 +277,12 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
 
     // Verificar y formatear las fechas para que sean más legibles
     results = results.map((sale) => {
-      sale.datetime_sold = moment(sale.datetime_sold).format(
-        "YYYY-MM-DD HH:mm:ss"
-      );
+      // Convertir la fecha a la zona horaria deseada en el servidor antes de devolverla al cliente
+      sale.datetime_sold = moment(sale.datetime_sold_local).format("YYYY-MM-DD HH:mm:ss");
+
+      // Puedes ajustar las fechas si es necesario (ejemplo: sumando 1 día si es necesario)
+      // sale.datetime_sold = moment(sale.datetime_sold).add(1, 'days').format("YYYY-MM-DD HH:mm:ss");
+
       return sale;
     });
 
