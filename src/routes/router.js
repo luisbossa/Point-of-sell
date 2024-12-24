@@ -278,9 +278,10 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
     // Verificar y formatear las fechas para que sean más legibles
     results = results.map((sale) => {
       // Convertir la fecha a la zona horaria deseada en el servidor antes de devolverla al cliente
-      sale.datetime_sold = moment(sale.datetime_sold_local).format("YYYY-MM-DD HH:mm:ss");
-
-      // Puedes ajustar las fechas si es necesario (ejemplo: sumando 1 día si es necesario)
+      sale.datetime_sold = moment(sale.datetime_sold_local).format(
+        "YYYY-MM-DD HH:mm:ss"
+      );
+      // Si la fecha sigue mal, agrega un ajuste de día (por ejemplo, sumar 1 día).
       // sale.datetime_sold = moment(sale.datetime_sold).add(1, 'days').format("YYYY-MM-DD HH:mm:ss");
 
       return sale;
