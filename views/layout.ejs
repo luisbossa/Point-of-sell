@@ -22,13 +22,6 @@
     <!-- Incluir jQuery y jQuery UI desde el CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Usamos la versión correcta de jQuery -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> <!-- Usamos la versión 1.12.1 -->
-</head>
-
-<body>
-    <div class="main-container">
-        <%- body %>
-    </div>
-
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -87,12 +80,25 @@
                     });
                 }
             });
+
+            // Inicializar el título con la fecha actual cuando se carga la página
+            var currentDate = new Date();
+            var formattedDate = formatDateToString(currentDate);
+            updateSalesInfoHeading(formattedDate);
         });
+
+        // Función para formatear la fecha en formato yyyy-mm-dd
+        function formatDateToString(date) {
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Asegurarse que el mes esté en dos dígitos
+            var day = date.getDate().toString().padStart(2, '0'); // Asegurarse que el día esté en dos dígitos
+            return year + '-' + month + '-' + day;
+        }
 
         // Función para actualizar el título dinámicamente
         function updateSalesInfoHeading(date) {
             // Formatear la fecha seleccionada (por ejemplo: "2024, octubre, 2")
-            var dateParts = date.split("-");
+            var dateParts = date.split("-"); // Dividir la fecha en partes (año, mes, día)
             var year = dateParts[0]; // Año
             var monthIndex = parseInt(dateParts[1], 10) - 1; // Índice del mes (0 basado)
             var day = dateParts[2]; // Día
@@ -107,7 +113,7 @@
             var monthName = months[monthIndex];
 
             // Actualizar el título en el DOM
-            $(".sales-info-heading").text("Del periodo " + year + ", " + monthName + ", " + day);
+            $(".sales-info-heading").text("Del periodo " + day + " de " + monthName + " de " + year);
         }
 
         // Función para mostrar los datos de ventas en la tabla
@@ -145,6 +151,12 @@
             $("#sales-num-text3").text("₡ " + itemTotal); // Total de los items
         }
     </script>
+</head>
+
+<body>
+    <div class="main-container">
+        <%- body %>
+    </div>
 </body>
 
 </html>
