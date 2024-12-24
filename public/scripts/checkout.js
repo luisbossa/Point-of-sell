@@ -1,7 +1,8 @@
+// Evento para el botón de compra
 document.querySelector(".buy-btn").addEventListener("click", () => {
   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-  // Si el carrito está vacío, mostramos un mensaje y deshabilitamos el pago
+  // Si el carrito está vacío, mostrar los valores en 0, deshabilitar los botones y el input
   if (cart.length === 0) {
     Swal.fire({
       title: "Verificar pago",
@@ -32,7 +33,7 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
         validationMessage: "custom-validation-message",
       },
       preConfirm: () => {
-        return false; // No se hace nada si no hay productos en el carrito
+        return false; // No se hace nada ya que no hay productos en el carrito
       },
       willClose: () => {
         document.getElementById("payment").value = "";
@@ -131,41 +132,45 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
       // Calcular item_total (la suma de todas las cantidades de productos en el carrito)
       const item_total = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-      const finalPrice = total_sum + total_sum * 0.1; // Precio final con IVA
+      // Calcular el IVA (10%) sobre el total_sum
+      const tax = total_sum * 0.1; // IVA del 10%
 
-      // Enviar la transacción al backend
+      // Calcular final_price: El precio total con IVA de todos los productos en el carrito
+      const finalPrice = cart.reduce((sum, item) => {
+        // Calculamos el total con IVA por cada ítem
+        const itemTotalWithTax =
+          item.price * item.quantity + item.price * item.quantity * 0.1;
+        return sum + itemTotalWithTax;
+      }, 0);
+
+      // Realizar la transacción
       fetch("/salesTransaction", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          total_sum,
-          employee_number: 1, // Ajusta según sea necesario
-          item_total,
-          finalPrice,
-          transactions,
+          total_sum: parseFloat(totalConIva.toFixed(2)), // Total con IVA
+          employee_number: 1, // Número de empleado
+          item_total: item_total,
+          //tax: parseFloat(tax.toFixed(2)), // IVA
+          finalPrice: parseFloat(finalPrice.toFixed(2)),
+          transactions: transactions, // Las transacciones con productos
         }),
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.success) {
-            Swal.fire({
-              title: "Pago realizado con éxito",
-              icon: "success",
-            });
+          Swal.fire({
+            title: "Pago realizado con éxito",
+            icon: "success",
+          });
 
-            // Borrar el carrito después del pago
-            localStorage.removeItem("cart");
-            updateCartTable(); // Limpiar la tabla visualmente
-            updateCartSummary(); // Actualizar el resumen visualmente
-          } else {
-            Swal.fire({
-              title: "Hubo un error",
-              text: data.error || "Error desconocido",
-              icon: "error",
-            });
-          }
+          // Borrar el carrito después de un pago exitoso
+          localStorage.removeItem("cart");
+
+          // Actualizar la tabla y el resumen del carrito
+          updateCartTable(); // Limpiar la tabla visualmente
+          updateCartSummary(); // Actualizar el resumen visualmente
         })
         .catch((error) => {
           Swal.fire({
@@ -178,14 +183,17 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
   });
 });
 
-function updateChange(total) {
+// Función para actualizar el cambio en tiempo real
+function updateChange(totalConIva) {
   const payment = parseFloat(document.getElementById("payment").value);
+  const changeElement = document.getElementById("change");
   if (!isNaN(payment)) {
-    const change = payment - total;
-    document.getElementById("change").textContent = change.toFixed(2);
+    const change = payment - totalConIva;
+    changeElement.textContent = change >= 0 ? change.toFixed(2) : "0";
+  } else {
+    changeElement.textContent = "0";
   }
 }
-
 const checkout = document.getElementById("checkout-btn");
 
 checkout.addEventListener("click", async () => {
