@@ -12,7 +12,7 @@ connection.connect((error) => {
     console.log("El error de conexión es: " + error);
     return;
   }
-  console.log("Conectado a la base de datos MySQL");
+  console.log("Conectado a la base de datos MySQL!");
 });
 
 module.exports = connection;
