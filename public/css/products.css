@@ -352,6 +352,7 @@
     width: 100%;
     color: var(--clr-mate);
     border-radius: var(--radius-4);
+    border-bottom-left-radius: 0;
     overflow: hidden;
 }
 
