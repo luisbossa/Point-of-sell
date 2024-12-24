@@ -22,6 +22,13 @@
     <!-- Incluir jQuery y jQuery UI desde el CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Usamos la versión correcta de jQuery -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> <!-- Usamos la versión 1.12.1 -->
+</head>
+
+<body>
+    <div class="main-container">
+        <%- body %>
+    </div>
+
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -148,15 +155,9 @@
             // Actualizar los totales de ventas, impuestos y totales de los items en la página
             $("#sales-num-text1").text("₡ " + totalSales.toFixed(2)); // Total de ventas
             $("#sales-num-text2").text("₡ " + totalTax.toFixed(2)); // Total de impuestos
-            $("#sales-num-text3").text("₡ " + itemTotal); // Total de los items
+            $("#sales-num-text3").text(itemTotal); // Total de los items
         }
     </script>
-</head>
-
-<body>
-    <div class="main-container">
-        <%- body %>
-    </div>
 </body>
 
 </html>

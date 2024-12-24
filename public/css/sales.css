@@ -174,16 +174,12 @@
     margin-bottom: var(--dl-space-space-halfunit);
 }
 
-.sales-num-text1 {
+.sales-num-text {
     width: 100%;
     font-size: 1.7rem;
     font-style: normal;
     text-align: center;
     font-weight: 500;
-}
-
-.sales-text10 {
-    font-size: 1.2rem;
 }
 
 .sales-u-text1 {
@@ -191,18 +187,6 @@
     font-size: 1.1rem;
     text-align: center;
     font-weight: 600;
-}
-
-.sales-num-text2 {
-    width: 100%;
-    font-size: 1.7rem;
-    font-style: normal;
-    text-align: center;
-    font-weight: 500;
-}
-
-.sales-text14 {
-    font-size: 1.2rem;
 }
 
 .sales-u-text2 {
@@ -232,10 +216,6 @@
     font-style: normal;
     text-align: center;
     font-weight: 500;
-}
-
-.sales-text18 {
-    font-size: 1.2rem;
 }
 
 .sales-u-text3 {
@@ -325,7 +305,7 @@
         font-weight: 600;
     }
 
-    .sales-num-text1 {
+    .sales-num-text {
         font-size: 1.5rem;
     }
 
@@ -335,10 +315,6 @@
 
     .sales-text12 {
         font-size: 1rem;
-    }
-
-    .sales-num-text2 {
-        font-size: 1.5rem;
     }
 
     .sales-u-text2 {

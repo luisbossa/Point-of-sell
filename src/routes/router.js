@@ -224,102 +224,95 @@ router.post("/updateProduct/:id", productController.updateProduct);
 router.delete("/deleteProducts/:id", productController.deleteProducts);
 
 router.get("/sales", authController.isAuthenticated, (req, res) => {
-  // Obtener la fecha seleccionada desde la query string
-  const selectedDate = req.query.date;
+  try {
+    // Obtener la fecha seleccionada, por defecto la fecha actual
+    const selectedDate = req.query.date || moment().format("YYYY-MM-DD"); // Usamos moment para obtener la fecha actual
+    const fullDate = selectedDate + " 00:00:00"; // Convertir la fecha a formato completo con hora
 
-  // Agregar la hora 00:00:00 si solo se pasa la fecha
-  const fullDate = selectedDate + " 00:00:00"; // Convertir la fecha a formato completo con hora
+    // Definir los rangos de tiempo para la consulta SQL
+    const startOfDay = fullDate; // El inicio del día (00:00:00)
+    const endOfDay = selectedDate + " 23:59:59"; // El final del día (23:59:59)
 
-  // Asegurarse de que el formato de las fechas sea correcto
-  const startOfDay = moment(selectedDate)
-    .startOf("day")
-    .format("YYYY-MM-DD HH:mm:ss"); // Inicio del día a las 00:00:00
-  const endOfDay = moment(selectedDate)
-    .endOf("day")
-    .format("YYYY-MM-DD HH:mm:ss"); // Fin del día a las 23:59:59
-
-  // Consulta SQL con fecha y hora completas y conversión de zona horaria
-  const query = `
+    // Realizar la consulta SQL para obtener las ventas
+    const query = `
       SELECT 
-          sale_transaction.sale_transaction_id,
-          sale_transaction.product_id,
-          sale_transaction.employee_number,
-          sale_transaction.qty_item,
-          sale_transaction.item_total,
-          sale_transaction.total_sum,
-          sale_transaction.tax,
-          sale_transaction.final_price,
-          CONVERT_TZ(sale_transaction.datetime_sold, '+00:00', '-06:00') AS datetime_sold_local, -- Convertir UTC a UTC-6
-          product.product_name,
-          product.price,
-          product.product_image,
-          users.user,
-          users.name,
-          users.email
+        sale_transaction.sale_transaction_id,
+        sale_transaction.product_id,
+        sale_transaction.employee_number,
+        sale_transaction.qty_item,
+        sale_transaction.item_total,
+        sale_transaction.total_sum,
+        sale_transaction.tax,
+        sale_transaction.final_price,
+        sale_transaction.datetime_sold,
+        product.product_name,
+        product.price,
+        product.product_image,
+        users.user,
+        users.name,
+        users.email
       FROM 
-          sale_transaction
+        sale_transaction
       JOIN 
-          product ON sale_transaction.product_id = product.product_id
+        product ON sale_transaction.product_id = product.product_id
       JOIN 
-          users ON sale_transaction.employee_number = users.id
+        users ON sale_transaction.employee_number = users.id
       WHERE 
-          sale_transaction.datetime_sold >= ? AND sale_transaction.datetime_sold < ? 
-  `;
+        sale_transaction.datetime_sold >= ? AND sale_transaction.datetime_sold < ? 
+    `;
 
-  // Ejecutar la consulta SQL con los parámetros de fecha
-  connection.query(query, [startOfDay, endOfDay], (err, results) => {
-    if (err) {
-      console.error("Error en la consulta:", err);
-      return res
-        .status(500)
-        .json({ error: "Error al obtener los datos de las ventas" });
-    }
+    // Ejecutar la consulta SQL con los parámetros de fecha
+    connection.query(query, [startOfDay, endOfDay], (err, results) => {
+      if (err) {
+        console.error("Error en la consulta:", err);
+        return res
+          .status(500)
+          .json({ error: "Error al obtener los datos de las ventas" });
+      }
 
-    // Verificar y formatear las fechas para que sean más legibles
-    results = results.map((sale) => {
-      // Convertir la fecha a la zona horaria deseada en el servidor antes de devolverla al cliente
-      sale.datetime_sold = moment(sale.datetime_sold_local).format(
-        "YYYY-MM-DD HH:mm:ss"
+      // Verificar y formatear las fechas para que sean más legibles
+      results = results.map((sale) => {
+        sale.datetime_sold = moment(sale.datetime_sold).format(
+          "YYYY-MM-DD HH:mm"
+        );
+        return sale;
+      });
+
+      // Calcular el total de impuestos, productos y ventas
+      const totalAmount = results.reduce(
+        (acc, sale) => acc + parseFloat(sale.total_sum),
+        0
       );
-      // Si la fecha sigue mal, agrega un ajuste de día (por ejemplo, sumar 1 día).
-      // sale.datetime_sold = moment(sale.datetime_sold).add(1, 'days').format("YYYY-MM-DD HH:mm:ss");
 
-      return sale;
+      const totalTax = results.reduce(
+        (acc, sale) => acc + parseFloat(sale.tax),
+        0
+      );
+
+      const itemTotal = results.reduce(
+        (acc, sale) => acc + parseInt(sale.qty_item, 10),
+        0
+      );
+
+      // Si deseas el total combinado de ventas + impuestos
+      const totalSales = totalAmount + totalTax;
+
+      res.render("sales", {
+        user: req.user,
+        salesData: results,
+        selectedDate: selectedDate,
+        totalTax: totalTax.toFixed(2),
+        itemTotal: itemTotal,
+        totalSales: totalSales.toFixed(2),
+      });
     });
-
-    // Calcular los totales
-    // Total de ventas: Sumar el total de cada transacción
-    const totalSales = results.reduce(
-      (acc, sale) => acc + parseFloat(sale.total_sum),
-      0
-    );
-
-    // Total de impuestos: Sumar el impuesto de cada transacción
-    const totalTax = results.reduce(
-      (acc, sale) => acc + parseFloat(sale.tax),
-      0
-    );
-
-    // Total de productos: Sumar la cantidad de productos vendidos
-    const itemTotal = results.reduce(
-      (acc, sale) => acc + parseInt(sale.qty_item, 10),
-      0
-    );
-
-    // Renderizar la vista con los datos y los totales
-    res.render("sales", {
-      user: req.user,
-      salesData: results,
-      selectedDate: selectedDate,
-      totalSales: totalSales,
-      totalTax: totalTax,
-      itemTotal: itemTotal,
-    });
-  });
+  } catch (error) {
+    console.error("Error en el controlador sales:", error);
+    res.status(500).json({ error: "Error al procesar la solicitud" });
+  }
 });
 
 router.get("/get-sales-data", salesDetailsController.salesDetails);
-
 router.post("/cardPayment", cardPaymentController.cardPayment);
 
 module.exports = router;

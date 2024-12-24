@@ -6,9 +6,6 @@ exports.salesDetails = async (req, res) => {
     // Obtener la fecha seleccionada desde la query string
     const selectedDate = req.query.date;
 
-    // Agregar la hora 00:00:00 si solo se pasa la fecha
-    const fullDate = selectedDate + " 00:00:00"; // Convertir la fecha a formato completo con hora
-
     // Asegurarse de que el formato de las fechas sea correcto
     const startOfDay = moment(selectedDate).startOf('day').format('YYYY-MM-DD HH:mm:ss');  // Inicio del día a las 00:00:00
     const endOfDay = moment(selectedDate).endOf('day').format('YYYY-MM-DD HH:mm:ss'); // Fin del día a las 23:59:59
