@@ -7,7 +7,7 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
     Swal.fire({
       title: "Verificar pago",
       html: `                    
-            <p><strong>Total a pagar:</strong> ₡0</p>
+            <p><strong>Total a pagar:</strong> ₡ 0</p>
             <input type="text" id="payment" class="swal2-custom-input" placeholder="Ingresar monto" disabled/>
             
             <div class="swal2-price-div">
@@ -18,7 +18,7 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
             </div>
             <p class="p-flex">
               <strong>Cambio:</strong> 
-              <p class="change">₡ <span class="change" id="change">0</span></p>
+               <span class="change" id="change" ₡ >0</span> 
             </p>
           `,
       showCancelButton: true,
