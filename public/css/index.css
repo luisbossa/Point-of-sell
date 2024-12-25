@@ -958,7 +958,6 @@ div:where(.swal2-container) div:where(.swal2-validation-message)::before {
     color: white;
     border: none;
     padding: 10px;
-    margin: 5px;
     border-radius: var(--radius-4);
     font-size: 16px;
     outline: 0;

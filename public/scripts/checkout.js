@@ -11,10 +11,10 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
             <input type="text" id="payment" class="swal2-custom-input" placeholder="Ingresar monto" disabled/>
             
             <div class="swal2-price-div">
-              <button class="payment-btn" data-value="5000" disabled>₡5000</button>
-              <button class="payment-btn" data-value="10000" disabled>₡10000</button>
-              <button class="payment-btn" data-value="15000" disabled>₡15000</button>
-              <button class="payment-btn" data-value="20000" disabled>₡20000</button>
+              <button class="payment-btn" data-value="5000" disabled>₡ 5000</button>
+              <button class="payment-btn" data-value="10000" disabled>₡ 10000</button>
+              <button class="payment-btn" data-value="15000" disabled>₡ 15000</button>
+              <button class="payment-btn" data-value="20000" disabled>₡ 20000</button>
             </div>
             <p class="p-flex">
               <strong>Cambio:</strong> 
