@@ -183,16 +183,35 @@
 
             <div class="users-div">
                 <label for="currentPass" class="users-label">Contraseña actual<span class="red-c">*</span></label>
-                <input id="currentPass" name="currentPass" type="password" class="users-textinput" value="" />
-
+                <div class="password-input-container">
+                    <input id="currentPass" name="currentPass" type="password" class="users-textinput" value="" />
+                    <img width="18" height="18" alt="eye view" id="toggleCurrentPassShow" src="/images/view.webp"
+                        class="toggle-password" />
+                    <img width="18" height="18" alt="eye hidden" id="toggleCurrentPassHide" src="/images/hide.webp"
+                        class="toggle-password" style="display: none;" />
+                </div>
             </div>
+
             <div class="users-div">
                 <label for="newPass" class="users-label">Contraseña nueva<span class="red-c">*</span></label>
-                <input id="newPass" name="newPass" type="password" class="users-textinput" value="" />
+                <div class="password-input-container">
+                    <input id="newPass" name="newPass" type="password" class="users-textinput" value="" />
+                    <img width="18" height="18" alt="eye view" id="toggleNewPassShow" src="/images/view.webp"
+                        class="toggle-password" />
+                    <img width="18" height="18" alt="eye hidden" id="toggleNewPassHide" src="/images/hide.webp"
+                        class="toggle-password" style="display: none;" />
+                </div>
             </div>
+
             <div class="users-div">
                 <label for="repeatPass" class="users-label">Repetir contraseña<span class="red-c">*</span></label>
-                <input id="repeatPass" name="repeatPass" type="password" class="users-textinput" value="" />
+                <div class="password-input-container">
+                    <input id="repeatPass" name="repeatPass" type="password" class="users-textinput" value="" />
+                    <img width="18" height="18" alt="eye view" id="toggleRepeatPassShow" src="/images/view.webp"
+                        class="toggle-password" />
+                    <img width="18" height="18" alt="eye hidden" id="toggleRepeatPassHide" src="/images/hide.webp"
+                        class="toggle-password" style="display: none;" />
+                </div>
             </div>
         </div>
         <div class="msm-div">
@@ -221,3 +240,4 @@
 </div>
 </div>
 </div>
+<script src="/scripts/revealPass.js"></script>
