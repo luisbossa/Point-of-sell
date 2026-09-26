@@ -6,18 +6,18 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
     Swal.fire({
       title: "Verificar pago",
       html: `                    
-            <p><strong>Total a pagar:</strong> ₡0.00</p>
+            <p><strong>Total a pagar:</strong> ₡ 0</p>
             <input type="text" id="payment" class="swal2-custom-input" placeholder="Ingresar monto" disabled/>
             
             <div class="swal2-price-div">
-              <button class="payment-btn" data-value="5000" disabled>₡5000</button>
-              <button class="payment-btn" data-value="10000" disabled>₡10000</button>
-              <button class="payment-btn" data-value="15000" disabled>₡15000</button>
-              <button class="payment-btn" data-value="20000" disabled>₡20000</button>
+              <button class="payment-btn" data-value="5000" disabled>₡ 5000</button>
+              <button class="payment-btn" data-value="10000" disabled>₡ 10000</button>
+              <button class="payment-btn" data-value="15000" disabled>₡ 15000</button>
+              <button class="payment-btn" data-value="20000" disabled>₡ 20000</button>
             </div>
             <p class="p-flex">
               <strong>Cambio:</strong> 
-              <p class="change">₡ <span class="change" id="change">0</span></p>
+               <span class="change" id="change" ₡ >0</span> 
             </p>
           `,
       showCancelButton: true,
@@ -140,11 +140,19 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+<<<<<<< HEAD
           total_sum,
           employee_number: 1, // Ajusta según sea necesario
           item_total,
           finalPrice,
           transactions,
+=======
+          total_sum: parseFloat(totalConIva), // Total con IVA
+          employee_number: 1, // Número de empleado
+          item_total: item_total,
+          finalPrice: parseFloat(finalPrice),
+          transactions: transactions, // Las transacciones con productos
+>>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
         }),
       })
         .then((response) => response.json())
@@ -181,6 +189,7 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
 function updateChange(total) {
   const payment = parseFloat(document.getElementById("payment").value);
   if (!isNaN(payment)) {
+<<<<<<< HEAD
     const change = payment - total;
     document.getElementById("change").textContent = "₡ " + change;
   }
@@ -188,6 +197,14 @@ function updateChange(total) {
 
 // Función para realizar pago con STRIPE
 
+=======
+    const change = payment - totalConIva;
+    changeElement.textContent = change >= 0 ? "₡ " + change : "₡ 0";
+  } else {
+    changeElement.textContent = "₡ 0";
+  }
+}
+>>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
 const checkout = document.getElementById("checkout-btn");
 
 checkout.addEventListener("click", async () => {
@@ -211,6 +228,7 @@ checkout.addEventListener("click", async () => {
     });
     return; // Detener la ejecución si el carrito está vacío
   }
+<<<<<<< HEAD
 
   try {
     // Obtener el total del carrito (sin IVA)
@@ -282,3 +300,6 @@ window.onload = () => {
     });
   }
 };
+=======
+});
+>>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37

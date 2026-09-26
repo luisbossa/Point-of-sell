@@ -6,10 +6,15 @@ exports.salesDetails = async (req, res) => {
     // Obtener la fecha seleccionada desde la query string
     const selectedDate = req.query.date;
 
-    // Agregar la hora 00:00:00 si solo se pasa la fecha
-    const fullDate = selectedDate + " 00:00:00"; // Convertir la fecha a formato completo con hora
+    // Asegurarse de que el formato de las fechas sea correcto
+    const startOfDay = moment(selectedDate)
+      .startOf("day")
+      .format("YYYY-MM-DD HH:mm"); // Inicio del día a las 00:00:00
+    const endOfDay = moment(selectedDate)
+      .endOf("day")
+      .format("YYYY-MM-DD HH:mm"); // Fin del día a las 23:59:59
 
-    // Consulta SQL con fecha y hora completas
+    // Consulta SQL con fecha y hora completas y conversión de zona horaria
     const query = `
     SELECT 
         sale_transaction.sale_transaction_id,
@@ -20,7 +25,7 @@ exports.salesDetails = async (req, res) => {
         sale_transaction.total_sum,
         sale_transaction.tax,
         sale_transaction.final_price,
-        sale_transaction.datetime_sold,
+        CONVERT_TZ(sale_transaction.datetime_sold, '+00:00', '-06:00') AS datetime_sold_local, -- Convertir UTC a UTC-6
         product.product_name,
         product.price,
         product.product_image,
@@ -37,10 +42,6 @@ exports.salesDetails = async (req, res) => {
         sale_transaction.datetime_sold >= ? AND sale_transaction.datetime_sold < ? 
     `;
 
-    // Para asegurarnos de que obtenemos todas las ventas del día completo, comparamos entre el inicio del día (00:00:00) y el siguiente día (00:00:00)
-    const startOfDay = fullDate; // El inicio del día (00:00:00)
-    const endOfDay = selectedDate + " 23:59:59"; // El final del día (23:59:59)
-
     // Ejecutar la consulta SQL pasando los valores correctos
     connection.query(query, [startOfDay, endOfDay], (err, results) => {
       if (err) {
@@ -52,8 +53,14 @@ exports.salesDetails = async (req, res) => {
 
       // Convertir las fechas a un formato legible (ejemplo: yyyy-mm-dd HH:mm:ss)
       results = results.map((sale) => {
+<<<<<<< HEAD
         sale.datetime_sold = moment(sale.datetime_sold).format(
           "YYYY-MM-DD HH:mm"
+=======
+        // Usar la fecha ya convertida en la consulta SQL, es decir, `datetime_sold_local`
+        sale.datetime_sold = moment(sale.datetime_sold_local).format(
+          "DD-MM-YYYY"
+>>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
         );
         return sale;
       });

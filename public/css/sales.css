@@ -37,18 +37,22 @@
 }
 
 .sales-container {
-    gap: var(--dl-space-space-halfunit);
     width: 100%;
     display: flex;
     min-height: 100vh;
     align-items: flex-start;
-    padding-top: var(--dl-space-space-unit);
     user-select: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: var(--dl-space-space-unit);
     padding-left: var(--dl-space-space-fourunits);
     padding-right: var(--dl-space-space-fourunits);
-    flex-direction: column;
     padding-bottom: var(--dl-space-space-unit);
+<<<<<<< HEAD
     justify-content: flex-start;
+=======
+    gap: var(--dl-space-space-halfunit);
+>>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
 }
 
 .sales-logo {

@@ -273,7 +273,11 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
       // Verificar y formatear las fechas para que sean más legibles
       results = results.map((sale) => {
         sale.datetime_sold = moment(sale.datetime_sold).format(
+<<<<<<< HEAD
           "YYYY-MM-DD HH:mm"
+=======
+          "DD-MM-YYYY"
+>>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
         );
         return sale;
       });

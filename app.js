@@ -9,6 +9,7 @@ const expressLayout = require("express-ejs-layouts");
 // Inicialización express app
 const app = express();
 
+<<<<<<< HEAD
 // Configuración dotenv
 dotenv.config();
 
@@ -20,6 +21,18 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
+=======
+app.use(
+  session({
+    secret: process.env.JWT_SECRET, 
+    resave: false, 
+    saveUninitialized: false, 
+    cookie: {
+      secure: process.env.NODE_ENV === "production", 
+      httpOnly: true, 
+      maxAge: 1000 * 60 * 60 * 24 * 7, 
+    },
+>>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
   })
 );
 

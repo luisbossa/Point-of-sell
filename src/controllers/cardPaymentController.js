@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const dotenv = require("dotenv");
 const Stripe = require("stripe");
 
@@ -34,4 +35,9 @@ exports.cardPayment = async (req, res) => {
     console.error("Error creando sesión de pago:", error);
     res.status(500).send("Error al procesar el pago");
   }
+=======
+
+exports.cardPayment = async (req, res) => {
+
+>>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
 };

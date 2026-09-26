@@ -87,13 +87,13 @@ exports.register = async (req, res) => {
                     role = "admin";
                     break;
                   case 2:
-                    role = "counter";
+                    role = "contador";
                     break;
                   case 3:
-                    role = "employee";
+                    role = "empleado";
                     break;
                   default:
-                    role = "unknown";
+                    role = "ninguno";
                 }
 
                 // Crear token JWT con las variables de entorno
