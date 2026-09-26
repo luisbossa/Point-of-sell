@@ -53,14 +53,8 @@ exports.salesDetails = async (req, res) => {
 
       // Convertir las fechas a un formato legible (ejemplo: yyyy-mm-dd HH:mm:ss)
       results = results.map((sale) => {
-<<<<<<< HEAD
         sale.datetime_sold = moment(sale.datetime_sold).format(
           "YYYY-MM-DD HH:mm"
-=======
-        // Usar la fecha ya convertida en la consulta SQL, es decir, `datetime_sold_local`
-        sale.datetime_sold = moment(sale.datetime_sold_local).format(
-          "DD-MM-YYYY"
->>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
         );
         return sale;
       });

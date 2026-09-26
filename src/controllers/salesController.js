@@ -13,11 +13,7 @@ exports.salesTransaction = async (req, res) => {
 
     // Usamos promesas para la conexión
     const connectionPromised = connection.promise();
-<<<<<<< HEAD
     await connectionPromised.beginTransaction();  // Inicia la transacción
-=======
-    await connectionPromised.beginTransaction(); // Inicia la transacción
->>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
 
     // Procesar cada transacción
     let transactionProcessed = 0;
@@ -46,13 +42,7 @@ exports.salesTransaction = async (req, res) => {
         // Si hay un error, hacer rollback
         await connectionPromised.rollback();
         console.error(err);
-<<<<<<< HEAD
         return res.status(500).json({ error: "Error al registrar la transacción" });
-=======
-        return res
-          .status(500)
-          .json({ error: "Error al registrar la transacción" });
->>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
       }
     }
 
