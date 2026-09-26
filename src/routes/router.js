@@ -6,7 +6,9 @@ const categoryController = require("../controllers/categoryController");
 const productController = require("../controllers/productController");
 const salesController = require("../controllers/salesController");
 const salesDetailsController = require("../controllers/salesDetailsController");
+const cardPaymentController = require("../controllers/cardPaymentController");
 const connection = require("../../database/db");
+const moment = require("moment");
 
 router.get("/categories/:category", categoryController.category);
 
@@ -62,7 +64,6 @@ router.get("/products", (req, res) => {
 });
 
 router.get("/", authController.isAuthenticated, (req, res) => {
-  // Consulta para obtener los primeros 18 productos
   connection.query(
     "SELECT product_id, product_name, product_image, price, category_id FROM product LIMIT 18",
     (err, products) => {
@@ -71,7 +72,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
         return res.status(500).send("Error al obtener los productos");
       }
 
-      // Consulta para obtener los productos 19-36
       connection.query(
         "SELECT product_id, product_name, product_image, price, category_id FROM product LIMIT 18, 18",
         (err, moreProducts) => {
@@ -84,7 +84,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
               .send("Error al obtener los productos adicionales");
           }
 
-          // Consulta para obtener los productos 37-54
           connection.query(
             "SELECT product_id, product_name, product_image, price, category_id FROM product LIMIT 36, 18",
             (err, extraProducts) => {
@@ -97,7 +96,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
                   .send("Error al obtener productos adicionales extra");
               }
 
-              // Consulta para obtener los productos 55-72 (nueva consulta)
               connection.query(
                 "SELECT product_id, product_name, product_image, price, category_id FROM product LIMIT 54, 18", // Agregar más productos
                 (err, moreExtraProducts) => {
@@ -110,7 +108,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
                       .send("Error al obtener más productos");
                   }
 
-                  // Obtener los colores de fondo de las categorías
                   connection.query(
                     "SELECT category_id, background_color FROM categories",
                     (err, categoryColors) => {
@@ -123,7 +120,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
                           .send("Error al obtener colores de categorías");
                       }
 
-                      // Función para obtener el color de fondo de una categoría
                       const getBackgroundColorByCategoryId = (categoryId) => {
                         const category = categoryColors.find(
                           (c) => c.category_id === categoryId
@@ -131,7 +127,6 @@ router.get("/", authController.isAuthenticated, (req, res) => {
                         return category ? category.background_color : "#FFFFFF"; // Fallback a blanco si no se encuentra el color
                       };
 
-                      // Asignar el color de fondo a cada producto
                       products.forEach((product) => {
                         product.backgroundColor =
                           getBackgroundColorByCategoryId(product.category_id);
@@ -151,14 +146,13 @@ router.get("/", authController.isAuthenticated, (req, res) => {
 
                       const hasMoreProducts = moreExtraProducts.length > 0;
 
-                      // Renderizar la vista pasando todos los productos y sus colores de fondo
                       res.render("index", {
                         user: req.user,
                         productos: products,
                         moreProductos: moreProducts,
                         extraProductos: extraProducts,
                         moreExtraProductos: moreExtraProducts,
-                        hasMoreProducts: hasMoreProducts, // Pasamos los productos 55-72
+                        hasMoreProducts: hasMoreProducts,
                       });
                     }
                   );
@@ -176,9 +170,12 @@ router.get("/", authController.isAuthenticated, (req, res) => {
 router.get("/users", authController.isAuthenticated, (req, res) => {
   res.render("users", {
     user: req.user,
-    otherUsers: res.locals.otherUsers || [],
     successMessage: "",
+    successMessage2: "",
+    passSuccessMessage: "",
     errorMessage: "",
+    errorMessage2: "",
+    passErrorMessage: "",
   });
 });
 
@@ -227,16 +224,95 @@ router.post("/updateProduct/:id", productController.updateProduct);
 router.delete("/deleteProducts/:id", productController.deleteProducts);
 
 router.get("/sales", authController.isAuthenticated, (req, res) => {
-  res.render("sales", {
-    user: req.user,
-    salesData: "",
-    selectedDate: "",
-    totalSales: "",
-    totalTax: "",
-    itemTotal: "",
-  });
+  try {
+    // Obtener la fecha seleccionada, por defecto la fecha actual
+    const selectedDate = req.query.date || moment().format("YYYY-MM-DD"); // Usamos moment para obtener la fecha actual
+    const fullDate = selectedDate + " 00:00:00"; // Convertir la fecha a formato completo con hora
+
+    // Definir los rangos de tiempo para la consulta SQL
+    const startOfDay = fullDate; // El inicio del día (00:00:00)
+    const endOfDay = selectedDate + " 23:59:59"; // El final del día (23:59:59)
+
+    // Realizar la consulta SQL para obtener las ventas
+    const query = `
+      SELECT 
+        sale_transaction.sale_transaction_id,
+        sale_transaction.product_id,
+        sale_transaction.employee_number,
+        sale_transaction.qty_item,
+        sale_transaction.item_total,
+        sale_transaction.total_sum,
+        sale_transaction.tax,
+        sale_transaction.final_price,
+        sale_transaction.datetime_sold,
+        product.product_name,
+        product.price,
+        product.product_image,
+        users.user,
+        users.name,
+        users.email
+      FROM 
+        sale_transaction
+      JOIN 
+        product ON sale_transaction.product_id = product.product_id
+      JOIN 
+        users ON sale_transaction.employee_number = users.id
+      WHERE 
+        sale_transaction.datetime_sold >= ? AND sale_transaction.datetime_sold < ? 
+    `;
+
+    // Ejecutar la consulta SQL con los parámetros de fecha
+    connection.query(query, [startOfDay, endOfDay], (err, results) => {
+      if (err) {
+        console.error("Error en la consulta:", err);
+        return res
+          .status(500)
+          .json({ error: "Error al obtener los datos de las ventas" });
+      }
+
+      // Verificar y formatear las fechas para que sean más legibles
+      results = results.map((sale) => {
+        sale.datetime_sold = moment(sale.datetime_sold).format(
+          "YYYY-MM-DD HH:mm"
+        );
+        return sale;
+      });
+
+      // Calcular el total de impuestos, productos y ventas
+      const totalAmount = results.reduce(
+        (acc, sale) => acc + parseFloat(sale.total_sum),
+        0
+      );
+
+      const totalTax = results.reduce(
+        (acc, sale) => acc + parseFloat(sale.tax),
+        0
+      );
+
+      const itemTotal = results.reduce(
+        (acc, sale) => acc + parseInt(sale.qty_item, 10),
+        0
+      );
+
+      // Si deseas el total combinado de ventas + impuestos
+      const totalSales = totalAmount + totalTax;
+
+      res.render("sales", {
+        user: req.user,
+        salesData: results,
+        selectedDate: selectedDate,
+        totalTax: totalTax,
+        itemTotal: itemTotal,
+        totalSales: totalSales,
+      });
+    });
+  } catch (error) {
+    console.error("Error en el controlador sales:", error);
+    res.status(500).json({ error: "Error al procesar la solicitud" });
+  }
 });
 
 router.get("/get-sales-data", salesDetailsController.salesDetails);
+router.post("/cardPayment", cardPaymentController.cardPayment);
 
 module.exports = router;

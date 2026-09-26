@@ -1,7 +1,7 @@
 // Esperar a que el DOM esté completamente cargado
 document.addEventListener("DOMContentLoaded", function () {
   // Obtener todos los botones de eliminación
-  const deleteButtons = document.querySelectorAll(".delete-btn");
+  const deleteButtons = document.querySelectorAll(".pdelete-btn");
 
   // Agregar un listener de clic a cada botón
   deleteButtons.forEach((button) => {

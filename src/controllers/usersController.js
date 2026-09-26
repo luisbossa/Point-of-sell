@@ -20,7 +20,33 @@ const upload = multer({
   },
 }); // Middleware de Multer
 
-// Función para actualizar el usuario
+const getUser = (req, res) => {
+  const userId = req.params.id; // Suponemos que el ID del usuario está en los parámetros de la URL
+
+  // Consulta SQL para obtener los datos del usuario
+  connection.query(
+    "SELECT * FROM users WHERE id = ?",
+    [userId],
+    (err, results) => {
+      if (err) {
+        console.error("Error al obtener el usuario:", err);
+        return res.status(500).send("Error al obtener el usuario");
+      }
+
+      // Verificar si el usuario existe
+      if (results.length === 0) {
+        return res.status(404).send("Usuario no encontrado");
+      }
+
+      const user = results[0];
+
+      // Pasar el usuario a la vista usando res.locals
+      res.user = user;
+      res.render("users", { user: res.user });
+    }
+  );
+};
+
 const updateUser = (req, res) => {
   // Verifica si hay un archivo cargado (por ejemplo, si excede el tamaño permitido)
   if (req.file && req.file.size > 5 * 1024 * 1024) {
@@ -49,72 +75,207 @@ const updateUser = (req, res) => {
     ? "/images/user-images/" + req.file.filename
     : null;
 
-  // Consulta SQL para actualizar el usuario en la base de datos
-  const query = `
-    UPDATE users
-    SET
-      user = ?, 
-      name = ?, 
-      email = ?, 
-      address = ?, 
-      province = ?, 
-      canton = ?, 
-      district = ?, 
-      image_file = ?, 
-      job_title_id = ?
-    WHERE id = ?
+  // Consulta para obtener el usuario autenticado con los datos de la tabla users y job_titles
+  const queryAuthenticatedUser = `
+    SELECT users.id, users.user, users.name, users.email, users.address, users.province, users.district, users.canton, users.image_file, users.job_title_id, job_titles.job_name, job_titles.job_title_id, users.password
+    FROM users
+    LEFT JOIN job_titles ON users.job_title_id = job_titles.job_title_id
+    WHERE users.id = ?
   `;
 
-  const values = [
-    username,
-    name,
-    email,
-    address,
-    province,
-    canton,
-    district,
-    imageFile,
-    job_name,
-    id,
-  ];
+  // Consulta para obtener otros usuarios
+  const queryOtherUsers = `
+    SELECT users.id, users.name, job_titles.job_name AS role, users.job_title_id, users.image_file
+    FROM users
+    LEFT JOIN job_titles ON users.job_title_id = job_titles.job_title_id
+    WHERE users.id != ?
+  `;
 
-  // Ejecutar la consulta para actualizar el usuario en la base de datos
-  connection.query(query, values, (err, results) => {
-    if (err) {
-      console.error("Error al actualizar el usuario:", err);
-      return res.status(500).send("Error al actualizar el usuario");
+  // Aquí usamos `id` de `req.body` en lugar de `id2`, asumiendo que `id` se pasa en el cuerpo de la solicitud
+  connection.query(queryAuthenticatedUser, [id], (err, results) => {
+    if (err || results.length === 0) {
+      return res.render("users", {
+        user: { error: "Usuario no encontrado" }, // En lugar de `null`, enviamos un objeto con error
+        otherUsers: [],
+        successMessage: "",
+        successMessage2: "",
+        passSuccessMessage: "",
+        errorMessage: "Usuario no encontrado.",
+        errorMessage2: "",
+        passErrorMessage: "",
+      });
     }
 
-    // Redirigir a la lista de usuarios si la actualización fue exitosa
-    res.redirect("/users");
-  });
-};
+    const user = {
+      id: results[0].id,
+      user: results[0].user,
+      name: results[0].name,
+      email: results[0].email,
+      address: results[0].address,
+      province: results[0].province,
+      district: results[0].district,
+      canton: results[0].canton,
+      image_file: results[0].image_file,
+      job_name: results[0].job_name,
+      job_title_id: results[0].job_title_id,
+      password: results[0].password,
+    };
 
-const getUser = (req, res) => {
-  const userId = req.params.id; // Suponemos que el ID del usuario está en los parámetros de la URL
-
-  // Consulta SQL para obtener los datos del usuario
-  connection.query(
-    "SELECT * FROM users WHERE id = ?",
-    [userId],
-    (err, results) => {
+    // Obtener otros usuarios
+    connection.query(queryOtherUsers, [id], (err, otherUsers) => {
       if (err) {
-        console.error("Error al obtener el usuario:", err);
-        return res.status(500).send("Error al obtener el usuario");
+        return res.render("users", {
+          user: user,
+          otherUsers: [], // Si hay un error, no pasamos otros usuarios
+          successMessage: "",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage: "Error al obtener los usuarios.",
+          errorMessage2: "",
+          passErrorMessage: "",
+        });
       }
 
-      // Verificar si el usuario existe
-      if (results.length === 0) {
-        return res.status(404).send("Usuario no encontrado");
+      // Asignar rol a cada usuario
+      otherUsers.forEach((otherUser) => {
+        switch (otherUser.job_title_id) {
+          case 1:
+            otherUser.role = "admin";
+            break;
+          case 2:
+            otherUser.role = "contador";
+            break;
+          case 3:
+            otherUser.role = "empleado";
+            break;
+          default:
+            otherUser.role = "ninguno";
+        }
+      });
+
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+      // Validar formato del correo electrónico
+      if (!emailRegex.test(email)) {
+        return res.render("users", {
+          user: user,
+          otherUsers: otherUsers,
+          successMessage: "",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage: "",
+          errorMessage2: "El formato del correo electrónico no es válido.",
+          passErrorMessage: "",
+        });
       }
 
-      const user = results[0];
+      if (email.length < 3) {
+        return res.render("users", {
+          user: user,
+          otherUsers: otherUsers,
+          successMessage: "",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage: "",
+          errorMessage2:
+            "El correo electrónico no puede tener más de 5 caracteres.",
+          passErrorMessage: "",
+        });
+      }
 
-      // Pasar el usuario a la vista usando res.locals
-      res.user = user;
-      res.render("users", { user: res.user });
-    }
-  );
+      // Validar que el nombre de usuario tenga al menos 3 caracteres
+      if (username.length < 3) {
+        return res.render("users", {
+          user: user,
+          otherUsers: otherUsers,
+          successMessage: "",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage2: "",
+          errorMessage:
+            "El nombre de usuario debe tener al menos 3 caracteres.",
+          passErrorMessage: "",
+        });
+      }
+
+      // Validar que el nombre tenga al menos 3 caracteres
+      if (name.length < 3) {
+        return res.render("users", {
+          user: user,
+          otherUsers: otherUsers,
+          successMessage: "",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage2: "",
+          errorMessage: "El nombre debe tener al menos 3 caracteres.",
+          passErrorMessage: "",
+        });
+      }
+
+      // Validar que la dirección tenga al menos 5 caracteres
+      if (address.length < 5) {
+        return res.render("users", {
+          user: user,
+          otherUsers: otherUsers,
+          successMessage: "",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage: "",
+          errorMessage2: "La dirección debe tener al menos 5 caracteres.",
+          passErrorMessage: "",
+        });
+      }
+
+      // Consulta SQL para actualizar el usuario en la base de datos
+      const query = `
+        UPDATE users
+        SET
+          user = ?, 
+          name = ?, 
+          email = ?, 
+          address = ?, 
+          province = ?, 
+          canton = ?, 
+          district = ?, 
+          image_file = ?, 
+          job_title_id = ?
+        WHERE id = ?
+      `;
+
+      const values = [
+        username,
+        name,
+        email,
+        address,
+        province,
+        canton,
+        district,
+        imageFile,
+        job_name,
+        id,
+      ];
+
+      // Ejecutar la consulta para actualizar el usuario en la base de datos
+      connection.query(query, values, (err, results) => {
+        if (err) {
+          console.error("Error al actualizar el usuario:", err);
+          return res.status(500).send("Error al actualizar el usuario");
+        }
+
+        // Redirigir a la lista de usuarios si la actualización fue exitosa
+        return res.render("users", {
+          user: user,
+          otherUsers: otherUsers,
+          successMessage: "Datos actualizados",
+          successMessage2: "Datos actualizados",
+          passSuccessMessage: "",
+          errorMessage: "",
+          errorMessage2: "",
+          passErrorMessage: "",
+        });
+      });
+    });
+  });
 };
 
 const changePassword = (req, res) => {
@@ -142,7 +303,11 @@ const changePassword = (req, res) => {
         user: req.user, // Pasa el usuario desde req.user si no se encuentra el usuario
         otherUsers: [], // No se pasan otros usuarios en caso de error
         successMessage: "",
-        errorMessage: "Usuario no encontrado.",
+        successMessage2: "",
+        passSuccessMessage: "",
+        errorMessage: "",
+        errorMessage2: "",
+        passErrorMessage: "Usuario no encontrado.",
       });
     }
 
@@ -168,7 +333,10 @@ const changePassword = (req, res) => {
           user: user,
           otherUsers: [], // Si hay un error, no pasamos otros usuarios
           successMessage: "",
-          errorMessage: "Error al obtener los usuarios.",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage: "",
+          passErrorMessage: "Error al obtener los usuarios.",
         });
       }
 
@@ -195,7 +363,11 @@ const changePassword = (req, res) => {
           user: user,
           otherUsers: otherUsers,
           successMessage: "",
-          errorMessage: "Todos los campos de contraseña son obligatorios.",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage: "",
+          errorMessage2: "",
+          passErrorMessage: "Todos los campos de contraseña son obligatorios.",
         });
       }
 
@@ -205,7 +377,11 @@ const changePassword = (req, res) => {
           user: user,
           otherUsers: otherUsers,
           successMessage: "",
-          errorMessage: "Las contraseñas nuevas no coinciden.",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage: "",
+          errorMessage2: "",
+          passErrorMessage: "Las contraseñas nuevas no coinciden.",
         });
       }
 
@@ -215,7 +391,12 @@ const changePassword = (req, res) => {
           user: user,
           otherUsers: otherUsers,
           successMessage: "",
-          errorMessage: "La nueva contraseña debe tener al menos 6 caracteres.",
+          successMessage2: "",
+          passSuccessMessage: "",
+          errorMessage: "",
+          errorMessage2: "",
+          passErrorMessage:
+            "La nueva contraseña debe tener al menos 6 caracteres.",
         });
       }
 
@@ -226,7 +407,12 @@ const changePassword = (req, res) => {
             user: user,
             otherUsers: otherUsers,
             successMessage: "",
-            errorMessage: "Hubo un error al verificar la contraseña actual.",
+            successMessage2: "",
+            passSuccessMessage: "",
+            errorMessage: "",
+            errorMessage2: "",
+            passErrorMessage:
+              "Hubo un error al verificar la contraseña actual.",
           });
         }
 
@@ -235,7 +421,11 @@ const changePassword = (req, res) => {
             user: user,
             otherUsers: otherUsers,
             successMessage: "",
-            errorMessage: "La contraseña actual es incorrecta.",
+            successMessage2: "",
+            passSuccessMessage: "",
+            errorMessage: "",
+            errorMessage2: "",
+            passErrorMessage: "La contraseña actual es incorrecta.",
           });
         }
 
@@ -257,7 +447,11 @@ const changePassword = (req, res) => {
                 user: user,
                 otherUsers: otherUsers,
                 successMessage: "",
-                errorMessage: "Error al actualizar la contraseña.",
+                successMessage2: "",
+                passSuccessMessage: "",
+                errorMessage: "",
+                errorMessage2: "",
+                passErrorMessage: "Error al actualizar la contraseña.",
               });
             }
 
@@ -265,8 +459,12 @@ const changePassword = (req, res) => {
             res.render("users", {
               user: user,
               otherUsers: otherUsers,
-              successMessage: "Contraseña actualizada correctamente.",
+              successMessage: "",
+              successMessage2: "",
+              passSuccessMessage: "Contraseña actualizada correctamente.",
               errorMessage: "",
+              errorMessage2: "",
+              passErrorMessage: "",
             });
           }
         );

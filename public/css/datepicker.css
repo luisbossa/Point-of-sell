@@ -42,10 +42,20 @@ table {
 }
 
 /* DatePicker Container */
+.datepicker-wrap {
+	height: 246px;
+}
+
+.datepicker-div {
+    height: 246px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} 
+
 .ui-datepicker {
 	width: 270px;
-	height: auto;
-	margin: 5px auto 0;
+	margin: auto 0;
 	font-family: Inter;
 }
 

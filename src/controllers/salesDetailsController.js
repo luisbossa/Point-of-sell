@@ -53,7 +53,7 @@ exports.salesDetails = async (req, res) => {
       // Convertir las fechas a un formato legible (ejemplo: yyyy-mm-dd HH:mm:ss)
       results = results.map((sale) => {
         sale.datetime_sold = moment(sale.datetime_sold).format(
-          "YYYY-MM-DD HH:mm:ss"
+          "YYYY-MM-DD HH:mm"
         );
         return sale;
       });
