@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-<<<<<<< HEAD
   // Función para alternar visibilidad de las contraseñas
-=======
->>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
   function togglePasswordVisibility(inputId, showIconId, hideIconId) {
     const passwordField = document.getElementById(inputId);
     const showIcon = document.getElementById(showIconId);

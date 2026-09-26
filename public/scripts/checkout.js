@@ -140,19 +140,11 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-<<<<<<< HEAD
           total_sum,
           employee_number: 1, // Ajusta según sea necesario
           item_total,
           finalPrice,
           transactions,
-=======
-          total_sum: parseFloat(totalConIva), // Total con IVA
-          employee_number: 1, // Número de empleado
-          item_total: item_total,
-          finalPrice: parseFloat(finalPrice),
-          transactions: transactions, // Las transacciones con productos
->>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
         }),
       })
         .then((response) => response.json())
@@ -189,7 +181,6 @@ document.querySelector(".buy-btn").addEventListener("click", () => {
 function updateChange(total) {
   const payment = parseFloat(document.getElementById("payment").value);
   if (!isNaN(payment)) {
-<<<<<<< HEAD
     const change = payment - total;
     document.getElementById("change").textContent = "₡ " + change;
   }
@@ -197,14 +188,6 @@ function updateChange(total) {
 
 // Función para realizar pago con STRIPE
 
-=======
-    const change = payment - totalConIva;
-    changeElement.textContent = change >= 0 ? "₡ " + change : "₡ 0";
-  } else {
-    changeElement.textContent = "₡ 0";
-  }
-}
->>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
 const checkout = document.getElementById("checkout-btn");
 
 checkout.addEventListener("click", async () => {
@@ -228,7 +211,6 @@ checkout.addEventListener("click", async () => {
     });
     return; // Detener la ejecución si el carrito está vacío
   }
-<<<<<<< HEAD
 
   try {
     // Obtener el total del carrito (sin IVA)
@@ -300,6 +282,3 @@ window.onload = () => {
     });
   }
 };
-=======
-});
->>>>>>> 0c3dea93e38f09c0ffa609d8cbb3f65785d00e37
