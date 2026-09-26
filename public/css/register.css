@@ -1,0 +1,9 @@
+.register-card {
+  max-width: 420px;
+}
+.register-form {
+  min-height: 480px;
+}
+.register-form .auth-fields {
+  gap: 14px;
+}

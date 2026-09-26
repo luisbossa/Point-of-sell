@@ -2,63 +2,56 @@
 <html lang="es">
 
 <head>
-    <title>POS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
-    <link rel="shortcut icon" href="/images/favicon.webp" type="icon/webp" sizes="32x32" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-        data-tag="font" />
-    <link rel="stylesheet" href="/css/login.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS | Registrarse</title>
+    <link rel="shortcut icon" href="/images/favicon.webp" type="image/webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <link rel="stylesheet" href="/css/register.css">
 </head>
 
-<body>
-    <div class="main-container-login">
-        <form method="POST" action="/register" class="form-register">
-            <h2 class="heading">REGISTRARSE</h2>
-
-            <div class="empty-div">
+<body class="auth-page">
+    <main class="auth-container">
+        <section class="auth-card register-card">
+            <div class="auth-logo"> <img src="/images/logo.webp" alt="Logo del POS" class="auth-logo-image"> </div>
+            <form method="POST" action="/register" class="auth-form register-form">
+                <h1 class="auth-title"> Registrarse </h1>
                 <% if (message) { %>
-                    <div class="error-message">
+                    <div class="auth-message" role="alert">
                         <%= message %>
                     </div>
                     <% } %>
-            </div>
-
-            <div class="register-main-div">
-                <div class="div">
-                    <label for="name" class="text">Nombre completo<span class="red-c">*</span></label>
-                    <input id="name" name="name" type="text" class="textinput" autofocus />
-                </div>
-
-                <div class="div">
-                    <label for="user" class="text">Usuario<span class="red-c">*</span></label>
-                    <input id="user" name="user" type="text" class="textinput" autofocus />
-
-                    <label for="job_name" class="text">Cargo<span class="red-c">*</span></label>
-                    <select id="job_name" name="job_name" class="textinput select">
-                        <option hidden selected>Selecciona una opción</option>
-                        <option value="1">Administrador/a</option>
-                        <option value="2">Contador/a</option>
-                        <option value="3">Empleado/a</option>
-                    </select>
-                </div>
-
-                <div class="div">
-                    <label for="pass" class="text">Contraseña<span class="red-c">*</span></label>
-                    <input id="pass" name="pass" type="password" class="textinput" />
-                </div>
-            </div>
-            <div class="btns-div-register">
-                <button type="submit" class="submit-btn btn blue">registrar</button>
-                <a href="/login" class="submit-btn btn black">➦ atras</a>
-            </div>
-        </form>
-        <div class="round-div">
-            <img alt="logo" src="/images/logo.webp" class="round-img" />
-        </div>
-    </div>
-    <script src=""></script>
+                        <div class="auth-fields">
+                            <div class="form-field"> <label for="name" class="form-label"> Nombre completo <span
+                                        class="required-mark" aria-hidden="true">*</span> </label> <input id="name"
+                                    name="name" type="text" class="form-input" autocomplete="name" autofocus required>
+                            </div>
+                            <div class="form-field"> <label for="user" class="form-label"> Usuario <span
+                                        class="required-mark" aria-hidden="true">*</span> </label> <input id="user"
+                                    name="user" type="text" class="form-input" autocomplete="username" required> </div>
+                            <div class="form-field"> <label for="job_name" class="form-label"> Cargo <span
+                                        class="required-mark" aria-hidden="true">*</span> </label> <select id="job_name"
+                                    name="job_name" class="form-input form-select" required>
+                                    <option value="" selected disabled> Selecciona una opción </option>
+                                    <option value="1"> Administrador/a </option>
+                                    <option value="2"> Contador/a </option>
+                                    <option value="3"> Empleado/a </option>
+                                </select> </div>
+                            <div class="form-field"> <label for="pass" class="form-label"> Contraseña <span
+                                        class="required-mark" aria-hidden="true">*</span> </label> <input id="pass"
+                                    name="pass" type="password" class="form-input" autocomplete="new-password" required>
+                            </div>
+                        </div>
+                        <div class="auth-actions"> <button type="submit" class="auth-button auth-button-secondary">
+                                Registrar </button> <a href="/login" class="auth-button auth-button-primary"> Atrás </a>
+                        </div>
+            </form>
+        </section>
+    </main>
 </body>
 
 </html>
