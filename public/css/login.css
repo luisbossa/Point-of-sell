@@ -1,6 +1,14 @@
-.login-card {
-  max-width: 380px;
+.auth-login-page {
+  background:
+    linear-gradient(135deg, rgba(16, 76, 112, 0.92), rgba(82, 87, 99, 0.95)),
+    url("/images/bg02.webp") center center / cover no-repeat;
 }
-.login-form {
-  min-height: 320px;
+
+.auth-login-wrapper {
+  position: relative;
+}
+
+.auth-login-card {
+  position: relative;
+  overflow: hidden;
 }

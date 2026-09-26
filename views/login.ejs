@@ -2,88 +2,126 @@
 <html lang="es">
 
 <head>
-    <meta charset="utf-8">
+    <title>POS</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
 
-    <title>POS | Iniciar sesión</title>
+    <link rel="shortcut icon" href="/images/favicon.webp" type="icon/webp" sizes="32x32">
 
-    <link rel="shortcut icon" href="/images/favicon.webp" type="image/webp">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/auth.css">
     <link rel="stylesheet" href="/css/login.css">
 </head>
 
-<body class="auth-page">
+<body class="auth-login-page">
 
-    <main class="auth-container">
+    <main class="auth-login-wrapper">
 
-        <section class="auth-card login-card">
+        <section class="auth-login-card">
 
-            <div class="auth-logo">
-                <img src="/images/logo.webp" alt="Logo del POS" class="auth-logo-image">
+            <div class="auth-login-brand">
+
+                <div class="auth-logo-frame">
+
+                    <div class="auth-logo-glow"></div>
+
+                    <img src="/images/logo.png" alt="POS">
+
+                </div>
+
             </div>
 
-            <form method="POST" action="/login" class="auth-form login-form">
+            <div class="auth-login-header">
 
-                <h1 class="auth-title">
-                    Iniciar sesión
-                </h1>
+                <h1>INICIAR SESIÓN</h1>
+
+                <p>
+                    Ingrese sus credenciales para continuar
+                </p>
+
+            </div>
+
+            <div class="auth-message">
 
                 <% if (message) { %>
-                    <div class="auth-message" role="alert">
-                        <%= message %>
+
+                    <div class="auth-message-error">
+
+                        <span class="auth-message-icon">
+                            !
+                        </span>
+
+                        <span class="auth-message-text">
+                            <%= message %>
+                        </span>
+
                     </div>
+
                     <% } %>
 
-                        <div class="auth-fields">
+            </div>
 
-                            <div class="form-field">
+            <form method="POST" action="/login" class="auth-login-form">
 
-                                <label for="user" class="form-label">
-                                    Usuario
-                                </label>
+                <div class="auth-field">
 
-                                <input id="user" name="user" type="text" class="form-input" autocomplete="username"
-                                    autofocus required>
+                    <label for="user" class="auth-field-label">
+                        Usuario
+                    </label>
 
-                            </div>
+                    <input id="user" name="user" type="text" class="auth-field-input" autocomplete="username" autofocus>
 
-                            <div class="form-field">
+                </div>
 
-                                <label for="pass" class="form-label">
-                                    Contraseña
-                                </label>
+                <div class="auth-field">
 
-                                <input id="pass" name="pass" type="password" class="form-input"
-                                    autocomplete="current-password" required>
+                    <label for="pass" class="auth-field-label">
+                        Contraseña
+                    </label>
 
-                            </div>
+                    <div class="auth-password-wrapper">
 
-                        </div>
+                        <input id="pass" name="pass" type="password" class="auth-field-input auth-password-input"
+                            autocomplete="current-password">
 
-                        <div class="auth-actions">
+                        <button type="button" class="auth-password-toggle" id="togglePassShow"
+                            aria-label="Mostrar contraseña" title="Mostrar contraseña">
 
-                            <button type="submit" class="auth-button auth-button-primary">
-                                Entrar
-                            </button>
+                            <svg class="auth-password-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M2.1 12s3.2-5.5 9.9-5.5S21.9 12 21.9 12s-3.2 5.5-9.9 5.5S2.1 12 2.1 12Z"
+                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round" />
 
-                            <a href="/register" class="auth-button auth-button-secondary">
-                                Registrar
-                            </a>
+                                <circle cx="12" cy="12" r="2.8" fill="none" stroke="currentColor" stroke-width="1.8" />
+                            </svg>
 
-                        </div>
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="auth-actions">
+
+                    <button type="submit" class="auth-action auth-action-primary">
+                        entrar
+                    </button>
+
+                    <a href="/register" class="auth-action auth-action-secondary">
+                        registrar
+                    </a>
+
+                </div>
 
             </form>
 
         </section>
 
     </main>
+
+    <script src="/js/revealPass.js"></script>
 
 </body>
 

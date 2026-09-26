@@ -1,9 +1,14 @@
-.register-card {
-  max-width: 420px;
+.auth-register-page {
+  background:
+    linear-gradient(135deg, rgba(16, 76, 112, 0.92), rgba(82, 87, 99, 0.95)),
+    url("/images/bg02.webp") center center / cover no-repeat;
 }
-.register-form {
-  min-height: 480px;
+
+.auth-register-wrapper {
+  position: relative;
 }
-.register-form .auth-fields {
-  gap: 14px;
+
+.auth-register-card {
+  position: relative;
+  overflow: hidden;
 }
