@@ -6,52 +6,65 @@ const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override");
 const expressLayout = require("express-ejs-layouts");
 
-// Inicialización express app
+// Inicialización
 const app = express();
 
-// Configuración dotenv
+// dotenv
 dotenv.config();
 
-// Middlewares
-// Middleware de sesión
+// CONFIGURACIÓN DE EJS
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// MIDDLEWARES
+
+// Sesión
 app.use(
   session({
     secret: "tu-secreto-aqui",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
-  })
+    cookie: {
+      secure: false,
+    },
+  }),
 );
 
-// Middleware para procesar datos enviados desde formularios
+// Procesar JSON
 app.use(express.json());
+
+// Procesar formularios
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware para cookies
+// Cookies
 app.use(cookieParser());
 
-// Middleware para EJS Layouts
-app.use(expressLayout);
-
-// Middleware para servir archivos estáticos
+// Archivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
 
-// Middleware para manejar el _method (simulando PUT)
+// Method Override
 app.use(methodOverride("_method"));
 
-// Rutas
-app.use(require("./src/routes/router"));
+// EJS Layouts
+app.use(expressLayout);
+app.set("layout", "layouts/layout");
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+// CACHE
 
-// Borrar cache middleware
 app.use(function (req, res, next) {
   if (!req.user) {
     res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
   }
+
   next();
 });
+
+// RUTAS
+
+app.use(require("./src/routes/router"));
+
+// SERVIDOR
 
 const port = process.env.PORT || 3000;
 

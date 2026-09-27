@@ -50,7 +50,7 @@ router.get("/products", (req, res) => {
       const pCategories = categoryResults; // Lista completa con id y nombre de las categorías
 
       // Si la consulta es exitosa, pasamos los resultados a la vista
-      res.render("products", {
+      res.render("pages/products", {
         products: productResults, // Pasamos todos los productos
         categories: categories, // Pasamos solo los nombres de las categorías
         pCategories: pCategories, // Pasamos la lista completa de categorías con id y nombre
@@ -168,7 +168,7 @@ router.get("/", authController.isAuthenticated, (req, res) => {
 
 // Ruta para cargar los datos del usuario
 router.get("/users", authController.isAuthenticated, (req, res) => {
-  res.render("users", {
+  res.render("pages/users", {
     user: req.user,
     successMessage: "",
     successMessage2: "",
@@ -297,7 +297,7 @@ router.get("/sales", authController.isAuthenticated, (req, res) => {
       // Si deseas el total combinado de ventas + impuestos
       const totalSales = totalAmount + totalTax;
 
-      res.render("sales", {
+      res.render("pages/sales", {
         user: req.user,
         salesData: results,
         selectedDate: selectedDate,
